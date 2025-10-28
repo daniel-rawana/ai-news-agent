@@ -6,6 +6,7 @@
 h1 {
     text-align: center;
     margin-top: 5vh;
+    margin-bottom: 5vh;
 }
 
 body{
@@ -14,52 +15,67 @@ body{
 
 nav{
     width:100vw;
-    height: 5vh;
-    background-color: #FF0000;
+    height: 8vh;
+    background-color: #F66c6c;
+    min-height: 30px;
 }
 
-ul {
+nav ul {
+    height:8vh;
     text-align: center;
-}
-
-ul li {
-    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    white-space: nowrap;
     list-style: none;
-    display: inline-block;
-    float: center;
-    line-height:5vh;
+
 }
 
-ul li a {
-    display: block;
+nav ul li {
+    align-items: center;
+    list-style: none; 
+    justify-content: center;
+    line-height:8vh;
+}
+
+nav ul li a {
+    display: inline-flex;
     text-decoration: none;
-    font-size:medium;
-    font-family: Helvetica;
+    font-size: clamp(5px,1.5vw,16px);
+    font-family: Helvetica,Arial,sans-serif;
     color: #1e1e1e;
-    padding: 0 17vh;
+    padding: 0 8vw;
+    font-weight: 700;
 }
 
-ul li a:hover {
-    display: block;
-    background-color: #f66c6c;
+nav ul li a:hover {
+    display: inline-flex;
+    background-color: #feb5b5;
+    align-items: center;
+    justify-content: center;
+    height: 8vh;
     text-decoration: none;
-    font-size:medium;
-    font-family: Helvetica;
+    font-size: clamp(5px,1.5vw,16px);
+    font-family: Helvetica, Arial, sans-serif;
     color: #6a3f3f;
-    padding: 0 17vh;
+    padding: 0 8vw;
     border-radius: .2vw .2vh;
+    font-weight: 700;
+    transform: scale(1.02);
 }
 
 
-video {
+body main video {
     display:block;
-    width:50%;
+    width:50vw;
+    height: 50vh;
     margin-left: auto;
     margin-right:auto;
     margin-top: 5vh;
     margin-bottom: 5vh;
+    border-radius: .8vw .8vh;
 }
-p {
+body main p {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -69,8 +85,8 @@ p {
 }
 iframe {
     display:block;
-    width:50%;
-    height:400px;
+    width:50vh;
+    height:50vw;
     margin-left: auto;
     margin-right:auto;
     margin-top: 5vh;

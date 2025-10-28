@@ -1,0 +1,59 @@
+body main ul {
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    list-style: none; 
+}
+
+body main ul li {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    height: 40vh;
+    align-items: center;
+    justify-content: center;
+}
+
+body main ul li a {
+    display: inline-flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: center;
+    background-color: rgb(234, 234, 234);
+    height: 40vh;
+    width: 25vw;
+    padding: 4vh;
+    margin-left: 2vh;
+    margin-right: 2vh;
+    border-radius: .8vw .8vh;
+}
+
+body main ul li a:hover {
+    display: inline-flex;
+    background-color: #f66c6c;
+
+}
+
+body main ul li a img {
+    width: 20vw;
+    height: 30vh;
+     border-radius: .8vw .8vh;
+}
+
+body main ul li a h2 {
+    font-size: medium;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.Tags {
+    font-size: small;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+body main ul li a p {
+    font-size: medium;
+    font-family: Helvetica, Arial, sans-serif;
+    
+}
