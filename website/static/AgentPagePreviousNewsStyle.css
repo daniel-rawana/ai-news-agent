@@ -16,11 +16,12 @@ body main ul li {
     justify-content: center;
 }
 
-body main ul li a {
-    display: inline-flex;
+body main ul li a  {
+    display: flex;
     flex-direction: column;
     text-decoration: none;
     align-items: center;
+    text-align: left;
     background-color: rgb(234, 234, 234);
     height: 40vh;
     width: 25vw;
@@ -30,6 +31,8 @@ body main ul li a {
     border-radius: .8vw .8vh;
 }
 
+
+
 body main ul li a:hover {
     display: inline-flex;
     background-color: #f66c6c;
@@ -37,23 +40,35 @@ body main ul li a:hover {
 }
 
 body main ul li a img {
+    align-self: center;
     width: 20vw;
     height: 30vh;
-     border-radius: .8vw .8vh;
+    border-radius: .8vw .8vh;
 }
 
 body main ul li a h2 {
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
+    color: gris;
     font-size: medium;
     font-family: Helvetica, Arial, sans-serif;
+    align-self: flex-start;
+    text-align: left;
 }
 
 .Tags {
     font-size: small;
     font-family: Helvetica, Arial, sans-serif;
+    text-align:left;
+    align-self: flex-start;
 }
 
 body main ul li a p {
     font-size: medium;
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
     font-family: Helvetica, Arial, sans-serif;
-    
+    align-self: flex-start;
+    text-align:left;
+    color: gris;
 }
