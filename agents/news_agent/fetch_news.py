@@ -29,5 +29,10 @@ for article in data['articles']:
     if len(structured_output['stories']) == 3:
         break
 
+def summarize_news(stories):
+    summaries = []
+    for story in stories:
+        summaries.append(f"Headline: {story['headline']}\nSummary: {story['summary']}\nSource: {story['source']}\n")
+    return "\n".join(summaries)
 
 print(json.dumps(structured_output, indent=2))
