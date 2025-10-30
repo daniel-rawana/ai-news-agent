@@ -35,7 +35,13 @@ body main ul li a  {
 
 body main ul li a:hover {
     display: inline-flex;
-    background-color: #f66c6c; 
+    background-color: #a4cde8; 
+    h2 {
+        color: #f5d173;
+    }
+    p {
+        color: #ffffff;
+    }
 
 }
 
@@ -49,7 +55,7 @@ body main ul li a img {
 body main ul li a h2 {
     padding-left: 2.5vw;
     padding-right: 2.5vw;
-    color: gris;
+    color: #276f9e;
     font-size: medium;
     font-family: Helvetica, Arial, sans-serif;
     align-self: flex-start;
@@ -70,5 +76,5 @@ body main ul li a p {
     font-family: Helvetica, Arial, sans-serif;
     align-self: flex-start;
     text-align:left;
-    color: gris;
+    color: #276f9e;
 }

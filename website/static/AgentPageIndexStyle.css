@@ -4,9 +4,42 @@
 }
 
 h1 {
-    text-align: center;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    width: 100vw;
+    height: 15vh;
+}
+
+h1 ul img.logo {
+    display: inline-block;
+    align-self: flex-start;
+}
+
+h1 ul img.namelogo {
+    align-self: center;
+    display: inline-block;
+}
+
+.logo {
+    padding-left: 5vw;
+    margin-right: 2vw;
+    vertical-align: top;
+
+    width:8%;
+    height: 15vh;
+    object-fit: cover;
+}
+
+.namelogo {
+    padding-left: 20vw;
+    margin-right: 2vw;
+    vertical-align: top;
+    align-self: center;
+
+    width:30%;
+    height: 15vh;
+    object-fit: cover;
 }
 
 body{
@@ -16,7 +49,7 @@ body{
 nav{
     width:100vw;
     height: 8vh;
-    background-color: #F66c6c;
+    background-color: #276f9e;
     min-height: 30px;
 }
 
@@ -43,21 +76,21 @@ nav ul li a {
     text-decoration: none;
     font-size: clamp(5px,1.5vw,16px);
     font-family: Helvetica,Arial,sans-serif;
-    color: #1e1e1e;
+    color: #ffffff;
     padding: 0 8vw;
     font-weight: 700;
 }
 
 nav ul li a:hover {
     display: inline-flex;
-    background-color: #feb5b5;
+    background-color: #a4cde8;
     align-items: center;
     justify-content: center;
     height: 8vh;
     text-decoration: none;
     font-size: clamp(5px,1.5vw,16px);
     font-family: Helvetica, Arial, sans-serif;
-    color: #6a3f3f;
+    color: #f5d173;
     padding: 0 8vw;
     border-radius: .2vw .2vh;
     font-weight: 700;
