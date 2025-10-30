@@ -13,24 +13,16 @@
 
     <nav>
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="previousnews.html">Previous News</a></li>
-            <li><a href="sources.html">Sources</a></li>
-            <li><a href="team.html">Team</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/previousnews">Previous News</a></li>
+            <li><a href="/sources">Sources</a></li>
+            <li><a href="/team">Team</a></li>
         </ul>
     </nav>
 
     <main>
-        <video width= "50vw" height= "50vh" autoplay muted controls > 
-        <source src="../static/test-files/test.mp4" type="video/mp4"> 
-        Your browser does not support the video tag.
-        </video>
-        <video width= "50vw" height= "50vh" autoplay muted controls > 
-        <source src="../static/test-files/TestVideoOne.mp4" type="video/mp4"> 
-        Your browser does not support the video tag.
-        </video>
-        <video width= "50vw" height= "50vh" autoplay muted controls > 
-        <source src="../static/test-files/TestVideoThree.mp4" type="video/mp4"> 
+        <video autoplay muted controls > 
+        <source src='{{video}}' type="video/mp4"> 
         Your browser does not support the video tag.
         </video>
 
@@ -38,6 +30,6 @@
         Video Tags Maybe Here.
         </p>
     </main>
-
+    <script src="index.js"></script>
 </body>
 </html>
