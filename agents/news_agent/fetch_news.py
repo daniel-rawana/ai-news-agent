@@ -4,6 +4,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
+
 def fetch_news(count):
     load_dotenv()
     API_KEY = os.getenv("API_KEY")
@@ -34,3 +35,4 @@ def fetch_news(count):
             break
 
     return json.dumps(structured_output, indent=2)
+# hi
