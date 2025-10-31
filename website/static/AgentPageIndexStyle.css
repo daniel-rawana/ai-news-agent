@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    width: 100vw;
+    height: 15vh;
+}
+
+h1 ul img.logo {
+    display: inline-block;
+    align-self: flex-start;
+}
+
+h1 ul img.namelogo {
+    align-self: center;
+    display: inline-block;
+}
+
+.logo {
+    padding-left: 5vw;
+    margin-right: 2vw;
+    vertical-align: top;
+
+    width:8%;
+    height: 15vh;
+    object-fit: cover;
+}
+
+.namelogo {
+    padding-left: 20vw;
+    margin-right: 2vw;
+    vertical-align: top;
+    align-self: center;
+
+    width:30%;
+    height: 15vh;
+    object-fit: cover;
+}
+
+body{
+    background-color: #eee;
+}
+
+nav{
+    width:100vw;
+    height: 8vh;
+    background-color: #276f9e;
+    min-height: 30px;
+}
+
+nav ul {
+    height:8vh;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    white-space: nowrap;
+    list-style: none;
+
+}
+
+nav ul li {
+    align-items: center;
+    list-style: none; 
+    justify-content: center;
+    line-height:8vh;
+}
+
+nav ul li a {
+    display: inline-flex;
+    text-decoration: none;
+    font-size: clamp(5px,1.5vw,16px);
+    font-family: Helvetica,Arial,sans-serif;
+    color: #ffffff;
+    padding: 0 8vw;
+    font-weight: 700;
+}
+
+nav ul li a:hover {
+    display: inline-flex;
+    background-color: #a4cde8;
+    align-items: center;
+    justify-content: center;
+    height: 8vh;
+    text-decoration: none;
+    font-size: clamp(5px,1.5vw,16px);
+    font-family: Helvetica, Arial, sans-serif;
+    color: #f5d173;
+    padding: 0 8vw;
+    border-radius: .2vw .2vh;
+    font-weight: 700;
+    transform: scale(1.02);
+}
+
+
+body main video {
+    display:block;
+    width:80vw;
+    height: 70vh;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    border-radius: .8vw .8vh;
+}
+body main p {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    text-align: center;
+}
+iframe {
+    display:block;
+    width:50vh;
+    height:50vw;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
