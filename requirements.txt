@@ -3,3 +3,4 @@ nodejs
 requests
 dotenv
 openai
+gTTS
