@@ -6,6 +6,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+agents/news_agent/__pycache__/fetch_news.cpython-312.pyc
 
 # Database files
 *.db
@@ -20,5 +21,6 @@ agents/video_agent/voiceovers/
 
 # Virtual environment
 venv/
+venv
 env/
 .venv/
