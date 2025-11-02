@@ -26,7 +26,9 @@ def fetch_news(count):
         story = {
             "headline": article['title'],
             "summary": article['description'],
-            "source": article['source']['name']
+            "source": article['source']['name'],
+            "url": article['url'],
+            "image": article['urlToImage']
         }
         structured_output['stories'].append(story)
 
