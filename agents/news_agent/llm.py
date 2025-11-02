@@ -18,21 +18,27 @@ def summarize_story(story):
 
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    content = story['stories'][0]
-    user_content = "Story to summarize:\n\n"
-    user_content += (
-        f"Headline: {content['headline']}\n"
-        f"Summary: {content['summary']}\n"
-        f"Source: {content['source']}\n\n"
-    )
+    stories = story['stories'][:3]
+    user_content = "Stories to summarize:\n\n"
+    for i, content in enumerate(stories, 1):
+        user_content += (
+            f"Story {i}:\n"
+            f"Headline: {content['headline']}\n"
+            f"Summary: {content['summary']}\n"
+            f"Source: {content['source']}\n\n"
+        )
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    user_content += f"\nToday's date is: {today}"
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role" :"system", "content": system_prompt},
             {"role": "user", "content": user_content}],
+        response_format={"type": "json_object"}
     )
 
     script = response.choices[0].message.content
 
-    return script 
+    return json.loads(script) 
