@@ -1,0 +1,32 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+
+header {
+    background-color: #1e90ff;
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    letter-spacing: 1px;
+}
+
+.video-section {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 16;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+}
