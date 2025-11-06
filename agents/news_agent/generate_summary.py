@@ -16,7 +16,9 @@ def generate_news_script(story_count=1, return_metadata=False):
             - If return_metadata=False: The generated news script string
             - If return_metadata=True: Dict with 'script' and 'story_metadata' keys
     """
-    stories_json = fetch_news(story_count)
+    categories = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+
+    stories_json = fetch_news(story_count, categories[6])
     
     # Check if fetch_news returned an error
     try:
