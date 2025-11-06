@@ -12,14 +12,10 @@ Guidelines:
 - IMPORTANT: Provide your response in JSON format using the following structure:
 {
     "date": "YYYY-MM-DD",
-    "stories": [
-    {
-        "title": "Headline text",
-        "summary": "2–3 sentences ≤ 60 words",
-        "source": {"name": "Outlet", "url": "https://..."},
-        "tags": ["tag1", "tag2",...]
-    },
-    ]
+    "title": "Headline text summarizing the stories"
+    "summary": "Start with a greeting, then 2–3 sentences ≤ 60 words summarizing the stories",
+    "sources": [{"name": "Outlet", "url": "https://..."}, ...],
+    "tags": ["tag1", "tag2",...]
 }
 
 Stories:
