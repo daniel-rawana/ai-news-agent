@@ -85,8 +85,9 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     
     # Save the script to a text file
     print(f"Saving script to {script_path}...")
+    print(script)
     with open(script_path, 'w', encoding='utf-8') as f:
-        f.write(script)
+        f.write(script['stories'][0]['summary'])
     
     # Generate and save the voiceover - use absolute path string
     print(f"Generating voiceover audio...")
