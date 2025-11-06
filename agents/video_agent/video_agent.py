@@ -32,7 +32,7 @@ tts = gTTS(text=script, lang='en')
 
 tts.save('Story.mp3')
 
-img_prompt = f"Create a professional news thumbnail image for this story: {script}. Style: modern news broadcast, clean, professional, high quality"
+img_prompt = f"Create a professional news thumbnail image for this story: {script}. Style: modern news broadcast, clean, professional, high quality. and Do not include any text in the image."
 try:
     response = client.images.generate(
         model="dall-e-3",
@@ -50,5 +50,14 @@ try:
 except Exception as e:
     print(f"Error generating image: {e}")
 
+import subprocess
+from video_gen import create_video_with_word_captions
 
-print("Video generation done")
+if os.path.exists("Story.mp3") and os.path.exists("thumbnail.png"):
+    create_video_with_word_captions(
+        audio_file="Story.mp3",
+        image_file="thumbnail.png",
+        output_file="Story.mp4"
+    )
+else:
+    print("Error: Audio or image file not found")
