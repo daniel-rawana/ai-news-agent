@@ -4,11 +4,11 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-def fetch_news(count):
+def fetch_news(count, category="general"):
     load_dotenv()
     API_KEY = os.getenv("API_KEY")
 
-    url = f"https://newsapi.org/v2/top-headlines?country=us&pageSize=10&apiKey={API_KEY}"
+    url = f"https://newsapi.org/v2/top-headlines?country=us&category={category}&pageSize=10&apiKey={API_KEY}"
 
     response = requests.get(url)
     data = response.json()
