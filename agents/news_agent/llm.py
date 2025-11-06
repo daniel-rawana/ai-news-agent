@@ -56,17 +56,17 @@ def summarize_story(story):
             response_format={"type": "json_object"}
         )
 
-    # Safely access the first story
-    if len(story['stories']) == 0:
-        raise ValueError("Stories list is empty.")
+        # Safely access the first story
+        if len(story['stories']) == 0:
+            raise ValueError("Stories list is empty.")
     
-    content = story['stories'][0]
-    user_content = "Story to summarize:\n\n"
-    user_content += (
-        f"Headline: {content.get('headline', 'No headline')}\n"
-        f"Summary: {content.get('summary', 'No summary')}\n"
-        f"Source: {content.get('source', 'Unknown source')}\n\n"
-    )
+        content = story['stories'][0]
+        user_content = "Story to summarize:\n\n"
+        user_content += (
+            f"Headline: {content.get('headline', 'No headline')}\n"
+            f"Summary: {content.get('summary', 'No summary')}\n"
+            f"Source: {content.get('source', 'Unknown source')}\n\n"
+        )
         script = response.choices[0].message.content
 
         return json.loads(script)
