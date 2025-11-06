@@ -55,6 +55,7 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     # Extract script and metadata
     if isinstance(result, dict):
         script = result.get('script', '')
+        script = script['summary']
         story_metadata = result.get('story_metadata')
     else:
         # Fallback if old format (shouldn't happen, but for safety)
@@ -87,7 +88,7 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     print(f"Saving script to {script_path}...")
     print(script)
     with open(script_path, 'w', encoding='utf-8') as f:
-        f.write(script['stories'][0]['summary'])
+        f.write(script)
     
     # Generate and save the voiceover - use absolute path string
     print(f"Generating voiceover audio...")
