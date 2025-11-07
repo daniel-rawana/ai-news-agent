@@ -1,8 +1,29 @@
+# Environment variables
 .env
+
+# Python cache
 __pycache__/
-venv
-agents\news_agent\__pycache__
+*.pyc
+*.pyo
+*.pyd
 agents/news_agent/__pycache__/fetch_news.cpython-312.pyc
+
+# Database files
+*.db
+
+# Agent-specific caches
+agents/database/__pycache__/
+agents/news_agent/__pycache__/
+agents/video_agent/__pycache__/
+
+# Voiceover output files
+agents/video_agent/voiceovers/
+
+# Virtual environment
+venv/
+venv
+env/
+.venv/
 agents/video_agent/__pycache__/video_gen.cpython-312.pyc
 agents/video_agent/__pycache__/video_agent.cpython-312.pyc
 agents/video_agent/Story.txt

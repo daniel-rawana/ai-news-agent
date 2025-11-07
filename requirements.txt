@@ -1,7 +1,7 @@
 flask
 nodejs
 requests
-dotenv
+python-dotenv
 openai
-gTTS
-ffmpeg
+gtts
+mutagen

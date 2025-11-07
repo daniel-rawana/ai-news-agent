@@ -13,26 +13,32 @@ def summarize_story(story):
     if isinstance(story, str):
         story = json.loads(story)
 
-    with open("system_prompt.txt", "r", encoding="utf-8") as f:
+    with open("agents/news_agent/system_prompt.txt", "r", encoding="utf-8") as f:
         system_prompt = f.read()
 
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    content = story['stories'][0]
-    user_content = "Story to summarize:\n\n"
-    user_content += (
-        f"Headline: {content['headline']}\n"
-        f"Summary: {content['summary']}\n"
-        f"Source: {content['source']}\n\n"
-    )
+    stories = story['stories'][:3]
+    user_content = "Stories to summarize:\n\n"
+    for i, content in enumerate(stories, 1):
+        user_content += (
+            f"Story {i}:\n"
+            f"Headline: {content['headline']}\n"
+            f"Summary: {content['summary']}\n"
+            f"Source: {content['source']}\n\n"
+        )
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    user_content += f"\nToday's date is: {today}"
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role" :"system", "content": system_prompt},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_content}],
+        response_format={"type": "json_object"}
     )
 
     script = response.choices[0].message.content
 
-    return script 
+    return json.loads(script) 
