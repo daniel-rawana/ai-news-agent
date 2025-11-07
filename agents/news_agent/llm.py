@@ -4,6 +4,7 @@ from datetime import datetime
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
 def summarize_story(story):
 
@@ -13,7 +14,11 @@ def summarize_story(story):
     if isinstance(story, str):
         story = json.loads(story)
 
-    with open("agents/news_agent/system_prompt.txt", "r", encoding="utf-8") as f:
+    # Get absolute path to system_prompt.txt relative to this script
+    script_dir = Path(__file__).parent.resolve()
+    prompt_path = script_dir / "system_prompt.txt"
+    
+    with open(prompt_path, "r", encoding="utf-8") as f:
         system_prompt = f.read()
 
     client = OpenAI(api_key=OPENAI_API_KEY)

@@ -4,12 +4,19 @@ from datetime import datetime
 from pathlib import Path
 from gtts import gTTS
 from mutagen.mp3 import MP3
+from video_gen import create_video_with_word_captions
+import requests
+from openai import OpenAI
+from dotenv import load_dotenv
 
 # Add parent directories to path to import from other agents
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'news_agent'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'database'))
 from generate_summary import generate_news_script
 from video_database import initialize_database, insert_video_record, get_db_path
+
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 def create_voiceover(story_count=1, output_dir="voiceovers"):
@@ -54,8 +61,13 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     
     # Extract script and metadata
     if isinstance(result, dict):
-        script = result.get('script', '')
-        script = script['summary']
+        script_data = result.get('script', {})
+        # script_data is a dict with 'summary' field (from summarize_story JSON response)
+        if isinstance(script_data, dict):
+            script = script_data.get('summary', '')
+        else:
+            # Fallback: if script_data is already a string, use it directly
+            script = str(script_data)
         story_metadata = result.get('story_metadata')
     else:
         # Fallback if old format (shouldn't happen, but for safety)
@@ -134,8 +146,64 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
         'script_path': str(script_path),
         'audio_path': str(audio_path),
         'timestamp': timestamp,
-        'video_id': video_id
+        'video_id': video_id,
+        'story_metadata': story_metadata,
+        'script': script
     }
+
+
+def generate_thumbnail(script_text, headline=None, output_path=None):
+    """
+    Generate a thumbnail image using DALL-E based on the news story.
+    
+    Args:
+        script_text: The news script/summary text
+        headline: Optional headline for better image generation
+        output_path: Path where to save the thumbnail
+    
+    Returns:
+        str: Path to the generated thumbnail, or None if generation failed
+    """
+    if not OPENAI_API_KEY:
+        print("Warning: OPENAI_API_KEY not found. Cannot generate thumbnail.")
+        return None
+    
+    try:
+        client = OpenAI(api_key=OPENAI_API_KEY)
+        
+        # Create a prompt for the thumbnail
+        if headline:
+            prompt = f"Create a professional news thumbnail image for this headline: {headline}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
+        else:
+            # Use first sentence of script as prompt
+            first_sentence = script_text.split('.')[0] if script_text else "News broadcast"
+            prompt = f"Create a professional news thumbnail image for this story: {first_sentence}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
+        
+        print("Generating thumbnail image with DALL-E...")
+        response = client.images.generate(
+            model="dall-e-3",
+            prompt=prompt,
+            n=1,
+            size="1024x1024"
+        )
+        
+        image_url = response.data[0].url
+        print(f"Thumbnail generated: {image_url}")
+        
+        # Download the image
+        if output_path:
+            img_response = requests.get(image_url)
+            img_response.raise_for_status()
+            with open(output_path, "wb") as f:
+                f.write(img_response.content)
+            print(f"Thumbnail saved to: {output_path}")
+            return str(output_path)
+        else:
+            return image_url
+            
+    except Exception as e:
+        print(f"Error generating thumbnail: {e}")
+        return None
 
 
 # Allow running as a standalone script
@@ -144,3 +212,38 @@ if __name__ == "__main__":
     print(f"\nVoiceover generation complete!")
     print(f"Script: {result['script_path']}")
     print(f"Audio: {result['audio_path']}")
+
+    # Generate video with word captions
+    # Get absolute path to thumbnail.png in the same directory as this script
+    script_dir = Path(__file__).parent.resolve()
+    thumbnail_path = script_dir / "thumbnail.png"
+    output_video_path = script_dir / "Story.mp4"
+    
+    # Generate thumbnail if it doesn't exist
+    thumbnail_ready = True
+    if not thumbnail_path.exists():
+        print(f"\nThumbnail not found at {thumbnail_path}. Generating one...")
+        story_metadata = result.get('story_metadata', {})
+        script_text = result.get('script', '')
+        headline = story_metadata.get('headline') if story_metadata else None
+        
+        generated_thumbnail = generate_thumbnail(
+            script_text=script_text,
+            headline=headline,
+            output_path=str(thumbnail_path)
+        )
+        
+        if not generated_thumbnail:
+            print("Failed to generate thumbnail. Skipping video generation.")
+            thumbnail_ready = False
+    
+    # Generate video with word captions using audio from voiceovers
+    if thumbnail_ready:
+        print("\nGenerating video with word captions...")
+        print(f"Using audio from: {result['audio_path']}")
+        create_video_with_word_captions(
+            audio_file=result['audio_path'],
+            image_file=str(thumbnail_path),
+            output_file=str(output_video_path)
+        )
+        print(f"Video with word captions created: {output_video_path}")

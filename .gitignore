@@ -24,3 +24,10 @@ venv/
 venv
 env/
 .venv/
+agents/video_agent/__pycache__/video_gen.cpython-312.pyc
+agents/video_agent/__pycache__/video_agent.cpython-312.pyc
+agents/video_agent/Story.txt
+agents/video_agent/Story.mp3
+agents/video_agent/thumbnail.png
+agents/video_agent/Story.mp4
+
