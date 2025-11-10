@@ -1,3 +1,50 @@
+
+ :root {
+    --bg-dark: oklch(0.92 0.045 255);
+    --bg: oklch(0.96 0.045 255);
+    --bg-light: oklch(1 0.045 255);
+    --text: oklch(0.15 0.09 255);
+    --text-muted: oklch(0.4 0.09 255);
+    --highlight: oklch(0.8245 0.0568 236.21);
+    --border: oklch(0.6 0.09 255);
+    --border-muted: oklch(0.7 0.09 255);
+    --primary: oklch(0.4 0.1 255);
+    --secondary: oklch(0.8724 0.1203 88.87);
+    --danger: oklch(0.5 0.09 30);
+    --warning: oklch(0.5 0.09 100);
+    --success: oklch(0.5 0.09 160);
+    --info: oklch(0.5 0.09 260);
+    --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg,var(--bg), var(--bg-light));
+    --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    --button-gradient-hover: linear-gradient(0deg,var(--secondary)10%, var(--primary));
+    --shadow: 0px 1vh 1vh hsla(0,0%,0%,0.07), 0px 2vh 2vh hsla(0,0%,0%,0.15);
+}
+
+body.light{
+    --bg-dark: oklch(0.1 0.045 255);
+    --bg: oklch(0.15 0.045 255);
+    --bg-light: oklch(0.2 0.045 255);
+    --text: oklch(0.96 0.09 255);
+    --text-muted: oklch(0.76 0.09 255);
+    --highlight: oklch(0.5 0.09 255);
+    --border: oklch(0.4 0.09 255);
+    --border-muted: oklch(0.3 0.09 255);
+    --primary: oklch(0.76 0.1 255);
+    --secondary: oklch(0.8724 0.1203 88.87);
+    --danger: oklch(0.7 0.09 30);
+    --warning: oklch(0.7 0.09 100);
+    --success: oklch(0.7 0.09 160);
+    --info: oklch(0.7 0.09 260);
+    --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg,var(--bg), var(--bg-light));
+    --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    --button-gradient-hover: linear-gradient(0deg,var(--secondary), var(--primary));
+    --shadow: 0px 2px 2px hsla(0,0%,0%,0.07), 0px 4px 4px hsla(0,0%,0%,0.15);
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -19,6 +66,33 @@ h1 ul img.logo {
 h1 ul img.namelogo {
     align-self: center;
     display: inline-block;
+}
+
+h1 button {
+    margin-right: 2vw;
+    margin-top: 2vh;
+    margin-bottom: auto;
+    margin-left: auto;
+    align-self: right;
+    font-size: x-small;
+    height: 4vh;
+    width: 4vh;
+    border-radius: 25%;
+    border: none;
+    background-color: var(--primary);
+    color: var(--bg-light);
+    cursor: pointer;
+    border: solid 0.1vh var(--border);
+    border-top: 0.1vh var var(--highlight);
+    box-shadow: var(--shadow);
+}
+
+h1 button:hover {
+    background: var(--button-gradient-hover);
+    background-color: var(--button-gradient-hover);
+    border: solid 0.1vh var(--bg-dark);
+    border-top: 0.1vh var var(--highlight);
+    
 }
 
 .logo {
@@ -43,13 +117,14 @@ h1 ul img.namelogo {
 }
 
 body{
-    background-color: #eee;
+    background-color: var(--bg-dark);
 }
 
 nav{
     width:100vw;
     height: 8vh;
-    background-color: #276f9e;
+    background: var(--nav-gradient);
+    background-color: var(--primary);
     min-height: 30px;
 }
 
@@ -76,39 +151,80 @@ nav ul li a {
     text-decoration: none;
     font-size: clamp(5px,1.5vw,16px);
     font-family: Helvetica,Arial,sans-serif;
-    color: #ffffff;
+    background: var(--nav-gradient);
+    background-color: var(--primary);
+    color: var(--highlight);
+    border-bottom: solid 0.1vh var(--border);
+    border-top: 0.1vh var var(--highlight);
     padding: 0 8vw;
     font-weight: 700;
+    
 }
 
 nav ul li a:hover {
     display: inline-flex;
-    background-color: #a4cde8;
+    background: var(--nav-gradient-hover);
+    background-color: var(--highlight);
     align-items: center;
     justify-content: center;
     height: 8vh;
     text-decoration: none;
     font-size: clamp(5px,1.5vw,16px);
     font-family: Helvetica, Arial, sans-serif;
-    color: #f5d173;
+    color: var(--secondary);
     padding: 0 8vw;
     border-radius: .2vw .2vh;
     font-weight: 700;
     transform: scale(1.02);
 }
+body main {
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90vw;
+    min-height: 80vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+} 
+
+body main ul {
+    list-style: none;
+}
+
+body main ul li.mainvid{
+     background: var(--gradient);
+    background-color: var(--gradient);
+    box-shadow: var(--shadow);
+    border: solid 1px var(--bg);
+    border-top: 1px var var(--highlight);
+    background-color: var(--bg);
+    width:90vw;
+    height: 180vh;
+    border-radius: 3%;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    
+}
 
 
-body main video {
+body main li video {
     display:block;
     width:80vw;
     height: 70vh;
     margin-left: auto;
     margin-right:auto;
+    padding-top: 5vh;
     margin-top: 5vh;
     margin-bottom: 5vh;
     border-radius: .8vw .8vh;
 }
-body main p {
+body main li p {
     width: 60%;
     margin-left: auto;
     margin-right: auto;

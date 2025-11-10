@@ -5,6 +5,7 @@
     <title>News Agent Title</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="../static/AgentPageIndexStyle.css">
+        <link rel="stylesheet" type="text/css" href="../static/AgentPageTeam.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -12,6 +13,7 @@
     <h1>
             <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
             <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
+            <button onclick="toggle()">Theme</button>
     </h1>
 
     <nav>
@@ -23,11 +25,37 @@
         </ul>
     </nav>
 
+    <main>
+        <ul>
+            <li>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p> </a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p> </a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p> </a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p> </a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+                <a> <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150"> <p>   </p></a>
+            </li>
+        </ul>
+    </main>
 
-    <p>It's a me, Team Page!
-        Information about the team goes here.
-    </p>
-
-
+ <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>

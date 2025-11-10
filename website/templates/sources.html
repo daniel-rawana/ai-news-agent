@@ -12,6 +12,7 @@
     <h1>
             <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
             <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
+            <button onclick="toggle()">Theme</button>
     </h1>
 
     <nav>
@@ -27,6 +28,6 @@
     </p>
 
 
-
+ <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>
