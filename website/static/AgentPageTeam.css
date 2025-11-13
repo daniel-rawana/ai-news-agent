@@ -1,4 +1,5 @@
 :root {
+    /*Colors*/
     --bg-dark: oklch(0.92 0.045 255);
     --bg: oklch(0.96 0.045 255);
     --bg-light: oklch(1 0.045 255);
@@ -9,7 +10,7 @@
     --border: oklch(0.6 0.09 255);
     --border-muted: oklch(0.7 0.09 255);
     --primary: oklch(0.4 0.1 255);
-    --secondary: oklch(79.865% 0.14784 85.528);
+    --secondary: oklch(0.8724 0.1203 88.87);
     --danger: oklch(0.5 0.09 30);
     --warning: oklch(0.5 0.09 100);
     --success: oklch(0.5 0.09 160);
@@ -18,6 +19,12 @@
     --gradient-hover: linear-gradient(0deg,var(--bg)30%, var(--bg-light));
     --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
     --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    /*Size Constants*/
+    --tab-width: 70vw;
+    --tab-height: 20vh;
+    --img-width: calc(var(--tab-width)*0.2);
+    --img-height: calc(var(--tab-height)*0.9);
+
 }
 
 body.light{
@@ -45,11 +52,12 @@ body.light{
 
 
 body main ul li  {
-    margin-top: 8vh;
-    margin-bottom: 8vh;
+    margin-top: 2vh;
+    margin-bottom: 4vh;
     display: flex;
+    gap: 0.5vh;
     flex-direction: column;
-    align-items: left;
+    align-items:center;
     justify-content: left;
 }
 
@@ -59,15 +67,15 @@ body main ul li a{
     text-decoration: none;
     align-items: left;
     text-align: left;
-    background: var(--gradient);
-    background-color: var(--gradient);
-    border: solid 1px var(--bg-dark);
-    border-top: 1px var var(--highlight);
+    background: var(--bg);
+    background-color: var(--bg);
+    /*border: solid 1px var(--bg-dark);*/
+    /*border-top: 1px var var(--highlight);*/
     box-shadow: var(--shadow);
-    height: 10vh;
-    width: 90vw;
+    height: var(--tab-height);
+    width: var(--tab-width);
     margin-right: 2vw;
-    margin-top: 4vh;
+    margin-top: 1vh;
     border-radius: .8vw .8vh;
 
 }
@@ -82,14 +90,92 @@ body main ul li a:hover {
     p {
         color: var(--text-muted);
     }
+    animation-name: teamSelect;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    img{
+        animation-name: imgSelect;
+        animation-duration: 0.8s;
+        animation-fill-mode: forwards;
+    }
+}
 
+body main ul li {
+    display: flex;
+    padding-bottom: 2vh;
 }
 
 body main ul li a img {
+    display: flex;
+    flex-direction: column;
     align-self: left;
     margin-left: 1vw;
     margin-top: 1vh;
-    width: 8vw;
-    height: 8vh;
+    width: calc(var(--tab-width)*0.2);
+    height: calc(var(--tab-height)*0.9);
     border-radius: .8vw .8vh;
 }
+
+body main ul li a{
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    margin-left: 1vw;
+    margin-top: 1vh;
+}
+
+body main ul li a div{
+    padding-left: 5vh;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+body main ul li a div p{
+    align-self:baseline;
+}
+
+@keyframes teamSelect{
+    0%{
+        translateY: 0;
+        border-radius: .7vw .7vw;
+        box-shadow: var(--shadow);
+        height: var(--tab-height);
+        width: var(--tab-width);
+         background: var(--bg);
+    }
+    50%{
+        transform: translateX(0px) translateY(-.5vh);
+        box-shadow: var(--shadow-long);
+        height: calc(var(--tab-height)*1.10);
+        width: calc(var(--tab-width)*1.10);
+        background: var(--bg-light);
+    }
+    100%{
+        background: var(--bg-light);
+        transform: translateX(0px) translateY(-.5vh);
+        scale: 1.03;
+        border-radius: 1vw 1vw;
+        box-shadow: var(--shadow-long);
+        height: calc(var(--tab-height)*1.10);
+        width: calc(var(--tab-width)*1.10);
+    }
+} 
+
+@keyframes imgSelect{
+    0%{
+        height: var(--img-height);
+        width: var(--img-width);
+    }
+    50%{
+        height: calc(var(--img-height)*1.10);
+        width: calc(var(--img-width)*1.10);
+    }
+    100%{
+        height: calc(var(--img-height)*1.10);
+        width: calc(var(--img-width)*1.10);
+    }
+} 

@@ -10,6 +10,7 @@
     --border-muted: oklch(0.7 0.09 255);
     --primary: oklch(0.4 0.1 255);
     --secondary: oklch(0.8724 0.1203 88.87);
+    --tertiary: oklch(0.515 0.1033 243.52);
     --danger: oklch(0.5 0.09 30);
     --warning: oklch(0.5 0.09 100);
     --success: oklch(0.5 0.09 160);
@@ -20,12 +21,13 @@
     --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
     --button-gradient-hover: linear-gradient(0deg,var(--secondary)10%, var(--primary));
     --shadow: 0px 1vh 1vh hsla(0,0%,0%,0.07), 0px 2vh 2vh hsla(0,0%,0%,0.15);
+    --shadow-long: 0px 2vh 2vh hsla(0,0%,0%,0.07), 0px 4vh 4vh hsla(0,0%,0%,0.15);
 }
 
 body.light{
     --bg-dark: oklch(0.1 0.045 255);
-    --bg: oklch(0.15 0.045 255);
-    --bg-light: oklch(0.2 0.045 255);
+    --bg: oklch(0.2 0.045 255);
+    --bg-light: oklch(0.4 0.045 255);
     --text: oklch(0.96 0.09 255);
     --text-muted: oklch(0.76 0.09 255);
     --highlight: oklch(0.5 0.09 255);
@@ -40,7 +42,7 @@ body.light{
     --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
     --gradient-hover: linear-gradient(0deg,var(--bg), var(--bg-light));
     --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
-    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary)95%, var(--border));
     --button-gradient-hover: linear-gradient(0deg,var(--secondary), var(--primary));
     --shadow: 0px 2px 2px hsla(0,0%,0%,0.07), 0px 4px 4px hsla(0,0%,0%,0.15);
 }
@@ -88,11 +90,14 @@ h1 button {
 }
 
 h1 button:hover {
-    background: var(--button-gradient-hover);
-    background-color: var(--button-gradient-hover);
+    background: var(--secondary);
+    background-color: var(--secondary);
     border: solid 0.1vh var(--bg-dark);
     border-top: 0.1vh var var(--highlight);
-    
+    box-shadow: var(--shadow);
+    animation-name: navSelect;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
 }
 
 .logo {
@@ -120,13 +125,13 @@ body{
     background-color: var(--bg-dark);
 }
 
-nav{
+/*nav{
     width:100vw;
     height: 8vh;
     background: var(--nav-gradient);
     background-color: var(--primary);
     min-height: 30px;
-}
+}*/
 
 nav ul {
     height:8vh;
@@ -136,6 +141,9 @@ nav ul {
     flex-direction: row;
     white-space: nowrap;
     list-style: none;
+    /* background: var(--nav-gradient);
+    border-top: 1px var var(--highlight);
+     box-shadow: var(--shadow);*/
 
 }
 
@@ -143,7 +151,9 @@ nav ul li {
     align-items: center;
     list-style: none; 
     justify-content: center;
-    line-height:8vh;
+    line-height:6vh;
+    padding-left: 3vw;
+    padding-right: 3vw;
 }
 
 nav ul li a {
@@ -151,78 +161,115 @@ nav ul li a {
     text-decoration: none;
     font-size: clamp(5px,1.5vw,16px);
     font-family: Helvetica,Arial,sans-serif;
-    background: var(--nav-gradient);
-    background-color: var(--primary);
+    background: var(--tertiary);
+    background-color: var(--tertiary);
     color: var(--highlight);
     border-bottom: solid 0.1vh var(--border);
     border-top: 0.1vh var var(--highlight);
-    padding: 0 8vw;
+    padding: 0 3vw;
     font-weight: 700;
-    
+    box-shadow: var(--shadow);
+    border-radius: .8vw .8vw;
 }
 
 nav ul li a:hover {
     display: inline-flex;
-    background: var(--nav-gradient-hover);
-    background-color: var(--highlight);
+    background: var(--secondary);
+    background-color: var(--secondary);
     align-items: center;
     justify-content: center;
-    height: 8vh;
+    height: 6vh;
     text-decoration: none;
     font-size: clamp(5px,1.5vw,16px);
     font-family: Helvetica, Arial, sans-serif;
-    color: var(--secondary);
-    padding: 0 8vw;
-    border-radius: .2vw .2vh;
+    color: var(--bg);
+    padding: 0 3vw;
+    border-radius: .7vw .7vw;
     font-weight: 700;
-    transform: scale(1.02);
+    box-shadow: var(--shadow);
+    animation-name: navSelect;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
 }
-body main {
-    display: block;
-    flex-direction: column;
+body main.indexmain {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
     width: 90vw;
     min-height: 80vh;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
 } 
 
 body main ul {
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body main ul div.sourcesIndex {
+    display: flex;
+    align-self: auto;
+    flex-direction: column;
+    align-items:baseline;
+    justify-content:baseline;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    background: var(--gradient);
+    border: solid 1px var(--bg);
+    border-top: 1px var var(--highlight);
+    background-color: var(--bg);
+    width:40vw;
+    height: 20vh;
+    border-radius: .8vw .8vw .8vw .8vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+     box-shadow: var(--shadow);
+
 }
 
 body main ul li.mainvid{
+    display: flex;
+    flex-direction: row;
+    gap: 4vw;
+    align-items: center;
+    justify-content: center;
+}
+
+body main ul li a{
+    display: block;
      background: var(--gradient);
-    background-color: var(--gradient);
     box-shadow: var(--shadow);
     border: solid 1px var(--bg);
     border-top: 1px var var(--highlight);
     background-color: var(--bg);
-    width:90vw;
-    height: 180vh;
-    border-radius: 3%;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow);
-    
+    width:20vw;
+    height: 60vh;
+    border-radius: .8vw .8vw .8vw .8vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+     box-shadow: var(--shadow);
+}
+
+body main ul li a.videoPlayer{
+    width: 50vw;
 }
 
 
 body main li video {
     display:block;
-    width:80vw;
-    height: 70vh;
+    width:47vw;
+    height: 54vh;
     margin-left: auto;
     margin-right:auto;
-    padding-top: 5vh;
-    margin-top: 5vh;
+    padding-top: 1vh;
+    margin-top: 1vh;
     margin-bottom: 5vh;
-    border-radius: .8vw .8vh;
+    border-radius: .8vw .8vw .8vw .8vw;
 }
 body main li p {
     width: 60%;
@@ -241,3 +288,21 @@ iframe {
     margin-top: 5vh;
     margin-bottom: 5vh;
 }
+@keyframes navSelect{
+    0%{
+        translateY: 0;
+        border-radius: .7vw .7vw;
+        box-shadow: var(--shadow);
+    }
+    50%{
+        transform: translateX(0px) translateY(-1vh);
+        box-shadow: var(--shadow-long);
+    }
+    100%{
+        transform: translateX(0px) translateY(-1vh);
+        scale: 1.15;
+        border-radius: 1vw 1vw;
+        box-shadow: var(--shadow-long);
+    }
+} 
+    

@@ -19,22 +19,32 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/previousnews">Previous News</a></li>
-            <li><a href="/sources">Sources</a></li>
+            <!--li><a href="/sources">Sources</a></li>-->
             <li><a href="/team">Team</a></li>
         </ul>
     </nav>
 
-    <main>
+    <main class="indexmain">
         <ul>
              <li class="mainvid">
-                <video autoplay muted controls > 
-                <source src='{{video}}' type="video/mp4"> 
-                Your browser does not support the video tag.
-                </video>
-                 <p>Possible Transcript of Video Text.
-                Video Tags Maybe Here.
-                </p>
-            </li>       
+                <a class="videoPlayer">
+                    <video autoplay muted controls > 
+                        <source src='{{video}}' type="video/mp4"> 
+                        Your browser does not support the video tag.
+                    </video>
+                </a>
+                <a>
+                    <h2>Tags</h2>
+                    <p>Possible Transcript of Video Text.
+                    </p>
+                </a>
+            </li>
+            <div class="sourcesIndex">
+                <a>
+                    <h2>Sources</h2>
+                    <p>Listed here:</p>
+                </a>
+            </div>       
         </ul>
     </main>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
