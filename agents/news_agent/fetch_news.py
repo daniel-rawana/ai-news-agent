@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 
 def fetch_news(count, category="general"):
+
     load_dotenv()
     API_KEY = os.getenv("API_KEY")
 
