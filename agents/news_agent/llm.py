@@ -23,9 +23,8 @@ def summarize_story(story):
 
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    original_titles = [s['headline'] for s in stories]
-
     stories = story['stories'][:3]
+    original_titles = [s['headline'] for s in stories]
     user_content = "Stories to summarize:\n\n"
     for i, content in enumerate(stories, 1):
         user_content += (
@@ -47,9 +46,9 @@ def summarize_story(story):
     )
 
     script = response.choices[0].message.content
-    script = json.loads(script)
-
-    #Add titles to the LLM response
-    script['original_titles'] = original_titles
-
-    return json.loads(script) 
+    
+    parsed_script = json.loads(script)
+    
+    parsed_script['original_titles'] = original_titles
+    
+    return parsed_script

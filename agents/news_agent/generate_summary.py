@@ -60,4 +60,4 @@ def generate_news_script(story_count=1, return_metadata=False):
 # Allow running as a standalone script
 if __name__ == "__main__":
     script = generate_news_script(4)
-    print(script)
+    print(json.dumps(script, indent=2))
