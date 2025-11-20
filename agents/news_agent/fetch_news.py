@@ -37,3 +37,10 @@ def fetch_news(count, category="general"):
             break
 
     return json.dumps(structured_output, indent=2)
+
+
+def main():
+    print(fetch_news(3))
+
+if __name__ == "__main__":
+    main()
