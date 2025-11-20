@@ -3,5 +3,4 @@ nodejs
 requests
 python-dotenv
 openai
-gtts
 mutagen
