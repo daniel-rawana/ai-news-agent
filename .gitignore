@@ -17,8 +17,16 @@ agents/news_agent/__pycache__/
 agents/video_agent/__pycache__/
 
 # Voiceover output files
-agents/video_agent/voiceovers/
+agents/video_agent/voiceovers/*
+!agents/video_agent/voiceovers/.gitkeep
 
+# Thumbnail output files
+agents/video_agent/thumbnails/*
+!agents/video_agent/thumbnails/.gitkeep
+
+agents/video_agent/Story.txt
+agents/video_agent/Story.mp3
+agents/video_agent/Story.mp4
 # Virtual environment
 venv/
 venv
@@ -26,8 +34,5 @@ env/
 .venv/
 agents/video_agent/__pycache__/video_gen.cpython-312.pyc
 agents/video_agent/__pycache__/video_agent.cpython-312.pyc
-agents/video_agent/Story.txt
-agents/video_agent/Story.mp3
-agents/video_agent/thumbnail.png
-agents/video_agent/Story.mp4
+
 

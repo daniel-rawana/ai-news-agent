@@ -2,9 +2,9 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
-from gtts import gTTS
+# gTTS replaced with OpenAI TTS
 from mutagen.mp3 import MP3
-from video_gen import create_video_with_word_captions
+from video_gen import create_video_with_word_captions, create_multi_story_video, detect_smart_story_boundaries
 import requests
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -25,7 +25,7 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     
     This function:
     1. Calls generate_news_script to fetch and summarize news
-    2. Converts the script to speech using gTTS
+    2. Converts the script to speech using OpenAI TTS
     3. Saves both script and audio files with timestamps
     4. Organizes outputs in a 'voiceovers' directory
     
@@ -102,10 +102,15 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     with open(script_path, 'w', encoding='utf-8') as f:
         f.write(script)
     
-    # Generate and save the voiceover - use absolute path string
-    print(f"Generating voiceover audio...")
-    tts = gTTS(text=script, lang='en', slow=False)
-    tts.save(str(audio_path))
+    # Generate and save the voiceover using OpenAI TTS
+    print(f"Generating voiceover audio with OpenAI TTS...")
+    client = OpenAI(api_key=OPENAI_API_KEY)
+    response = client.audio.speech.create(
+        model="tts-1",  # Use "tts-1-hd" for higher quality
+        voice="nova",   # Options: alloy, echo, fable, onyx, nova, shimmer
+        input=script
+    )
+    response.stream_to_file(str(audio_path))
     print(f"Voiceover saved to {audio_path}")
     
     # Calculate audio duration
@@ -152,98 +157,127 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     }
 
 
-def generate_thumbnail(script_text, headline=None, output_path=None):
-    """
-    Generate a thumbnail image using DALL-E based on the news story.
-    
-    Args:
-        script_text: The news script/summary text
-        headline: Optional headline for better image generation
-        output_path: Path where to save the thumbnail
-    
-    Returns:
-        str: Path to the generated thumbnail, or None if generation failed
-    """
-    if not OPENAI_API_KEY:
-        print("Warning: OPENAI_API_KEY not found. Cannot generate thumbnail.")
-        return None
-    
-    try:
-        client = OpenAI(api_key=OPENAI_API_KEY)
-        
-        # Create a prompt for the thumbnail
-        if headline:
-            prompt = f"Create a professional news thumbnail image for this headline: {headline}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
-        else:
-            # Use first sentence of script as prompt
-            first_sentence = script_text.split('.')[0] if script_text else "News broadcast"
-            prompt = f"Create a professional news thumbnail image for this story: {first_sentence}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
-        
-        print("Generating thumbnail image with DALL-E...")
-        response = client.images.generate(
-            model="dall-e-3",
-            prompt=prompt,
-            n=1,
-            size="1024x1024"
-        )
-        
-        image_url = response.data[0].url
-        print(f"Thumbnail generated: {image_url}")
-        
-        # Download the image
-        if output_path:
-            img_response = requests.get(image_url)
-            img_response.raise_for_status()
-            with open(output_path, "wb") as f:
-                f.write(img_response.content)
-            print(f"Thumbnail saved to: {output_path}")
-            return str(output_path)
-        else:
-            return image_url
-            
-    except Exception as e:
-        print(f"Error generating thumbnail: {e}")
-        return None
 
 
 # Allow running as a standalone script
 if __name__ == "__main__":
-    result = create_voiceover()
+    story_count = 4
+    result = create_voiceover(story_count=story_count)
     print(f"\nVoiceover generation complete!")
     print(f"Script: {result['script_path']}")
     print(f"Audio: {result['audio_path']}")
 
-    # Generate video with word captions
-    # Get absolute path to thumbnail.png in the same directory as this script
+    # Setup paths
     script_dir = Path(__file__).parent.resolve()
-    thumbnail_path = script_dir / "thumbnail.png"
+    thumbnails_dir = script_dir / "thumbnails"
+    thumbnails_dir.mkdir(exist_ok=True)
+    timestamp = result['timestamp']
     output_video_path = script_dir / "Story.mp4"
     
-    # Generate thumbnail if it doesn't exist
-    thumbnail_ready = True
-    if not thumbnail_path.exists():
-        print(f"\nThumbnail not found at {thumbnail_path}. Generating one...")
-        story_metadata = result.get('story_metadata', {})
-        script_text = result.get('script', '')
+    # Get script and metadata
+    script_text = result.get('script', '')
+    story_metadata = result.get('story_metadata', {})
+    
+    # For multi-story videos, generate multiple thumbnails
+    if story_count > 1:
+        print(f"\n=== Creating Multi-Story Video with {story_count} segments ===")
+        
+        # Detect story boundaries FIRST to get actual text per story
+        print("\nDetecting story boundaries and extracting text...")
+        story_segments = detect_smart_story_boundaries(result['audio_path'], story_count)
+        
+        if not story_segments:
+            print("❌ Failed to detect story boundaries. Aborting.")
+        else:
+            # Generate thumbnails based on ACTUAL story text
+            thumbnail_paths = []
+            for i, segment in enumerate(story_segments):
+                print(f"\nGenerating thumbnail {i+1}/{story_count} based on story content...")
+                thumb_path = thumbnails_dir / f"thumbnail_{timestamp}_story{i+1}.png"
+                
+                # Use first 150 characters of actual story text for better image generation
+                story_preview = segment['text'][:150]
+                prompt = f"Create a professional news thumbnail image for this story: {story_preview}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
+                
+                try:
+                    client = OpenAI(api_key=OPENAI_API_KEY)
+                    response = client.images.generate(
+                        model="dall-e-3",
+                        prompt=prompt,
+                        n=1,
+                        size="1024x1024"
+                    )
+                    image_url = response.data[0].url
+                    img_response = requests.get(image_url)
+                    img_response.raise_for_status()
+                    with open(thumb_path, "wb") as f:
+                        f.write(img_response.content)
+                    print(f"✅ Thumbnail {i+1} saved: {thumb_path}")
+                    print(f"   Based on: {story_preview}...")
+                    thumbnail_paths.append(str(thumb_path))
+                except Exception as e:
+                    print(f"⚠️  Failed to generate thumbnail {i+1}: {e}")
+                    if thumbnail_paths:
+                        thumbnail_paths.append(thumbnail_paths[-1])
+                    else:
+                        print("❌ Failed to generate any thumbnails. Aborting.")
+                        exit(1)
+            
+            # Extract boundaries from segments
+            boundaries = [(seg['start'], seg['end']) for seg in story_segments]
+            
+            if len(thumbnail_paths) == story_count:
+                print(f"\n🎬 Creating multi-story video with dynamic effects...")
+                print(f"Audio: {result['audio_path']}")
+                print(f"Thumbnails: {len(thumbnail_paths)}")
+                print(f"Boundaries: {boundaries}")
+                
+                success = create_multi_story_video(
+                    audio_file=result['audio_path'],
+                    image_files=thumbnail_paths,
+                    story_boundaries=boundaries,
+                    output_file=str(output_video_path)
+                )
+                
+                if success:
+                    print(f"\n✅ Multi-story video created successfully: {output_video_path}")
+                else:
+                    print(f"\n❌ Failed to create multi-story video")
+            else:
+                print("❌ Error: Could not create video - missing thumbnails")
+    
+    else:
+        # Single story video (original behavior)
+        print(f"\n=== Creating Single Story Video ===")
+        thumbnail_path = thumbnails_dir / f"thumbnail_{timestamp}.png"
         headline = story_metadata.get('headline') if story_metadata else None
         
-        generated_thumbnail = generate_thumbnail(
-            script_text=script_text,
-            headline=headline,
-            output_path=str(thumbnail_path)
-        )
-        
-        if not generated_thumbnail:
-            print("Failed to generate thumbnail. Skipping video generation.")
-            thumbnail_ready = False
-    
-    # Generate video with word captions using audio from voiceovers
-    if thumbnail_ready:
-        print("\nGenerating video with word captions...")
-        print(f"Using audio from: {result['audio_path']}")
-        create_video_with_word_captions(
-            audio_file=result['audio_path'],
-            image_file=str(thumbnail_path),
-            output_file=str(output_video_path)
-        )
-        print(f"Video with word captions created: {output_video_path}")
+        # Generate thumbnail
+        try:
+            prompt = f"Create a professional news thumbnail image for this headline: {headline}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image." if headline else f"Create a professional news thumbnail image for this story: {script_text[:150]}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
+            
+            client = OpenAI(api_key=OPENAI_API_KEY)
+            response = client.images.generate(
+                model="dall-e-3",
+                prompt=prompt,
+                n=1,
+                size="1024x1024"
+            )
+            image_url = response.data[0].url
+            img_response = requests.get(image_url)
+            img_response.raise_for_status()
+            with open(thumbnail_path, "wb") as f:
+                f.write(img_response.content)
+            print(f"✅ Thumbnail saved: {thumbnail_path}")
+            
+            print("\nGenerating video with word captions...")
+            print(f"Using audio from: {result['audio_path']}")
+            print(f"Using thumbnail from: {thumbnail_path}")
+            create_video_with_word_captions(
+                audio_file=result['audio_path'],
+                image_file=str(thumbnail_path),
+                output_file=str(output_video_path)
+            )
+            print(f"✅ Video created: {output_video_path}")
+        except Exception as e:
+            print(f"❌ Failed to generate thumbnail: {e}")
