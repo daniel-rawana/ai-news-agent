@@ -1,31 +1,108 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>News Agent Title</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="../static/AgentPageIndexStyle.css">
-        <link rel="stylesheet" type="text/css" href="../static/AgentPageTeam.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/AgentPageIndexStyle.css"
+    />
+    <link rel="stylesheet" type="text/css" href="../static/AgentPageTeam.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="/static/index.js"></script>
+  </head>
 
-<body>
+  <body>
     <h1>
-            <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
-            <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
-            <button onclick="toggle()">Theme</button>
+      <img
+        class="logo"
+        src="{{HermesLogo}}"
+        alt="Page Logo"
+        width="200"
+        height="150"
+      />
+      <img
+        class="namelogo"
+        src="{{HermesName}}"
+        alt="Page Name"
+        width="400"
+        height="100"
+      />
+      <button onclick="toggle()">Theme</button>
     </h1>
 
     <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/previousnews">Previous News</a></li>
-            <!--li><a href="/sources">Sources</a></li>-->
-            <li><a href="/team">Team</a></li>
-        </ul>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/previousnews">Previous News</a></li>
+        <!--li><a href="/sources">Sources</a></li>-->
+        <li><a href="/team">Team</a></li>
+      </ul>
     </nav>
 
     <main>
+        <h1 class="teamSection">Team Lead</h1>
+    
+      <a>
+        <div class="hidden">
+          <div class="imageContainer">
+            <h2 class="name">Daniel Rawana</h2>
+            <img class="photo" src="{{danielR}}" />
+            <p class="degree">Information Systems</p>
+          </div>
+        </div>
+      </a>
+    
+
+      <section>
+        <div class="teamPicture hidden">
+          <div class="imageContainer">
+            <h2 class="name">Mohamed Al Saleh</h2>
+            <img class="photo" src="{{mohamedA}}" />
+            <p class="degree">Information System</p>
+          </div>
+
+          <div class="imageContainer">
+            <h2 class="name">Eduardo Goncalvez</h2>
+            <img class="photo" src="{{eduardoG}}" />
+            <p class="degree">Computer Science</p>
+          </div>
+
+          <div class="imageContainer">
+            <h2 class="name">Rickny Sanon</h2>
+            <img class="photo" src="{{ricknyS}}" />
+            <p class="degree">Computer Science</p>
+          </div>
+        </div>
+
+        <div class="teamPicture hidden">
+          <div class="imageContainer">
+            <h2 class="name">Remberto Silva Tejada</h2>
+            <img class="photo" src="{{rembertoS}}" />
+            <p class="degree">Computer Science</p>
+          </div>
+
+          <div class="imageContainer">
+            <h2 class="name">Roborto</h2>
+            <img class="photo" src="{{test2}}" />
+            <p class="degree">Computer Science</p>
+          </div>
+
+          <div class="imageContainer">
+            <h2 class="name">Miles</h2>
+            <img class="photo" src="{{test1}}" />
+            <p class="degree">Computer Science</p>
+          </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </body>
+</html>
+
+<!-- 
+
+<main>
         <ul>
             <li>
                 <a> 
@@ -100,8 +177,4 @@
                 </a>
             </li>
         </ul>
-    </main>
-
- <script src="{{ url_for('static', filename='index.js') }}"></script>
-</body>
-</html>
+    </main> -->

@@ -138,6 +138,71 @@ body main ul li a div p{
     align-self:baseline;
 }
 
+
+.imageContainer {
+    display: grid;
+    place-items: center;
+    padding: 10px;
+    margin: 10px auto;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background-color: var(--bg-light);
+    box-shadow: var(--shadow);
+    width: 300px;
+}
+
+.imageContainer:hover {
+  border-color: var(--secondary);
+  background: var(--gradient-hover);
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+.hidden {
+    opacity:0;
+    transition: all 1s;
+    display: flex;
+  justify-content: center;
+}
+.photo{
+     width: 300px;
+    height: 300px;  /* Increased from 250px to 300px */
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+.show {
+    opacity: 1;
+}
+
+.teamPicture{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+    padding-top: 100px;
+}
+
+.name{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    
+}
+.degree{
+    padding-top: 15px;
+    font-size: 17px;
+}
+.teamSection{
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;      /* Centers vertically */
+    min-height: 10vh;
+}
+
+
+
 @keyframes teamSelect{
     0%{
         translateY: 0;
