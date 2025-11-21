@@ -3,6 +3,7 @@ import supabase
 from dotenv import load_dotenv
 from typing import Optional, List, Dict, Any
 from pathlib import Path
+from datetime import date, datetime
 
 # Import from same directory
 from video_database import get_videos_by_status
@@ -31,6 +32,24 @@ def fetch_all_videos():
         "video_sources(sources(*)), " \
         "video_tags(tags(*))"
     ).execute()
+
+    return response.data or []
+
+def fetch_video_by_date(date):
+
+    try:
+        parsed_date = datetime.strptime(date, "%Y-%m-%d").date()
+    except ValueError:
+        raise ValueError("Date must be in YYYY-MM-DD format")
+
+    client = get_supabase_client()
+
+    response = client.table("videos").select(
+        "*, " \
+        "original_titles(*), " \
+        "video_sources(sources(*)), " \
+        "video_tags(tags(*))"
+    ).eq("date", str(parsed_date)).execute()
 
     return response.data or []
 
@@ -121,14 +140,12 @@ def upload_video_metadata(news_data, video_url= None, thumbnail_url=None):
     else:
         raise Exception("Failed to insert video metadata in videos table")
 
-    # TODO Modify this once news team completes original titles task
-    if news_data.get("original_titles"):
-        for position, title in enumerate(news_data["original_titles"]):
-            client.table("original_titles").insert({
-                "video_id": video_id,
-                "title": title,
-                "position": position
-            }).execute()
+    for position, title in enumerate(news_data["original_titles"]):
+        client.table("original_titles").insert({
+            "video_id": video_id,
+            "title": title,
+            "position": position
+        }).execute()
 
     for source_data in news_data["sources"]:
         source_name = source_data["name"]
