@@ -4,8 +4,9 @@ Task: Summarize the following news stories into a 30–60 second spoken script.
 
 Guidelines:
 - Start with a short intro, for example Here's what's making headlines today.
+- Continue with a detailed description of each story, at least 10 sentences of >= 30 words each.
 - Use clear, conversational language for a general audience.
-- Focus only on the key facts; avoid opinions or fluff.
+- Focus only on the facts; avoid opinions or fluff.
 - Generate at least one 'tag' or topic related to the article
 - End with a simple closing line, for example That's your quick news update for today.
 
@@ -13,7 +14,7 @@ Guidelines:
 {
     "date": "YYYY-MM-DD",
     "title": "Headline text summarizing the stories"
-    "summary": "Start with a greeting, then 2–3 sentences ≤ 60 words summarizing the stories",
+    "summary": "Start with a greeting, then 10 sentences summarizing the stories",
     "sources": [{"name": "Outlet", "url": "https://..."}, ...],
     "tags": ["tag1", "tag2",...]
 }
