@@ -5,11 +5,8 @@ import operator
 
 class NewsVideoState(TypedDict, total=False):
     stories: List[dict]
-    script: str
-    audio_path: str
-    thumbnails: List[str]
-    # story_boundaries: List[dict]
-    video_path: str
+    original_titles: List[str]
+    summary: dict
     error: Optional[str]
     status: str
 
@@ -19,3 +16,9 @@ def fetch_news_node(state: NewsVideoState) -> NewsVideoState:
 
     return {"stories": response["stories"], "status": "news_fetched"}
 
+def generate_script_node(state: NewsVideoState) -> NewsVideoState:
+    from agents.news_agent.llm import summarize_story
+
+    response = summarize_story(state)
+
+    return {"summary": response, "status": "script_generated"}
