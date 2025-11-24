@@ -254,6 +254,28 @@ def finalize_record_node(state: NewsVideoState) -> dict:
 
         upload_video_metadata(video_metadata, video_url, thumbnail_url)
 
+        # Clean up local files after successful upload
+        # Delete video file
+        if os.path.exists(state["video_path"]):
+            os.remove(state["video_path"])
+            print(f"[DEBUG] Deleted local video: {state['video_path']}")
+
+        # Delete thumbnails
+        for thumb in state["thumbnails"]:
+            if os.path.exists(thumb):
+                os.remove(thumb)
+                print(f"[DEBUG] Deleted local thumbnail: {thumb}")
+
+        # Delete audio file
+        if os.path.exists(state["audio_path"]):
+            os.remove(state["audio_path"])
+            print(f"[DEBUG] Deleted local audio: {state['audio_path']}")
+
+        # Delete script file
+        if os.path.exists(state["script_path"]):
+            os.remove(state["script_path"])
+            print(f"[DEBUG] Deleted local script: {state['script_path']}")
+
         print("[DEBUG] finalize_record_node completed")
         return {"status": "completed"}
 
@@ -310,7 +332,7 @@ def create_news_video_graph_with_checkpointing(db_path: str = "checkpoints.db"):
 
 def run_news_video_pipeline(story_count: int = 3):
     print("=" * 60)
-    print("=� HERMES AI News Video Pipeline")
+    print("= HERMES AI News Video Pipeline")
     print("=" * 60)
 
     # Create and run the graph
