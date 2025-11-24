@@ -1,11 +1,13 @@
-from flask import Flask, render_template, url_for
-from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+load_dotenv()
 
-database_newsAgent = SQLAlchemy()
+import os
+from flask import Flask, render_template, url_for
+from supabase import create_client
+
+supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
 
 app = Flask(__name__)
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "https://pjsalngjxodbkbdqoqtz.supabase.co"
 
 @app.context_processor
 def inject_hermes_assets():
@@ -16,8 +18,13 @@ def inject_hermes_assets():
 
 @app.route("/")
 def index():
-    mainvideo = url_for('static', filename='test-files/test.mp4')
-    return render_template('index.html', video = mainvideo)
+    mainvideo = supabase.table('videos').select('*').execute()
+    videos = mainvideo.data
+
+    video_url = videos[0]['video_url'] if videos else None
+
+    return render_template('index.html', video=video_url)
+    
 
 @app.route("/previousnews")
 def previousnews():
