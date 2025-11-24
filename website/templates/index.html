@@ -4,11 +4,12 @@
 <head>
     <title>News Agent Title</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="../static/AgentPageIndexStyle.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
+    <div class="backgroundImage">
     <h1>
             <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
             <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
@@ -33,20 +34,27 @@
                         Your browser does not support the video tag.
                     </video>
                 </a>
+            </li>
+            <div class = "LowerHalf">
+            <div class="TagsandText">
                 <a>
-                    <h2>Tags</h2>
+                    <div><h2>News Title</h2>
+                    <div class="tagList" id="tagList"></div>
+                    </div>
                     <p>Possible Transcript of Video Text.
                     </p>
-                </a>
-            </li>
+                </a>  
+            </div>
             <div class="sourcesIndex">
                 <a>
                     <h2>Sources</h2>
                     <p>Listed here:</p>
                 </a>
-            </div>       
+            </div>  
+            </div>  
         </ul>
     </main>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
+    </div>
 </body>
 </html>

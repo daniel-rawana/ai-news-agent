@@ -11,7 +11,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "https://pjsalngjxodbkbdqoqtz.supabase.c
 def inject_hermes_assets():
     return {
         'HermesLogo': url_for('static', filename='test-files/HermesLogoSoloTransparent.png'),
-        'HermesName': url_for('static', filename='test-files/HermesLettersTransparent.png')
+        'HermesName': url_for('static', filename='test-files/HermesLettersTransparent.png'),
+        'BackgroundImage': url_for('static', filename='test-files/worldbackground.png')
     }
 
 @app.route("/")

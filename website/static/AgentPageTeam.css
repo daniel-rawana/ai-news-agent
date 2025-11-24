@@ -50,6 +50,11 @@ body.light{
     --shadow: 0px 2px 2px hsla(0,0%,0%,0.07), 0px 4px 4px hsla(0,0%,0%,0.15);
 }
 
+@font-face {
+    font-family: "Montserrat-Black";
+    src: url("test-files/Holtwood_One_SC,Montserrat/Montserrat/static/Montserrat-Black.ttf") format("truetype");
+}
+
 
 body main ul li  {
     margin-top: 2vh;
@@ -61,121 +66,221 @@ body main ul li  {
     justify-content: left;
 }
 
-body main ul li a{
-     display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    align-items: left;
-    text-align: left;
-    background: var(--bg);
-    background-color: var(--bg);
-    /*border: solid 1px var(--bg-dark);*/
-    /*border-top: 1px var var(--highlight);*/
-    box-shadow: var(--shadow);
-    height: var(--tab-height);
-    width: var(--tab-width);
-    margin-right: 2vw;
-    margin-top: 1vh;
-    border-radius: .8vw .8vh;
+.collage{
+    position:relative;
+    padding-top: 12vh;
+    overflow:visible;
+    display:grid;
+    max-width:70vw;
+    max-height: 90vh;
+    margin-inline:auto;
+    padding-bottom: 10vh;
+    gap:2vw;
+    grid-template-rows: repeat(5,1fr);
+    grid-template-columns: repeat(8,1fr);
+
+    grid-template-areas: 
+  "one  one  .    two   .     five .  six"
+  "one  one  ten  three three five    nine ."
+  ".    eleven    ten  three three twelve .  ."
+  ". seven .   third four four . ."
+  ".  seven . .   four four eight .";
 
 }
 
-body main ul li a:hover {
-    display: inline-flex;
-    background: var(--gradient-hover);
-    background-color: var(--highlight); 
-    h2 {
-        color: var(--secondary);
-    }
-    p {
-        color: var(--text-muted);
-    }
+.collage > div {
+    position: relative;
+    overflow:visible;
+    border-radius: 1px;
+    border-color: var(--border);
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0);
+}
+
+.collage > div > div {
+    position:absolute;
+    overflow:visible;
+    border-radius: 1px;
+    border-color: var(--border);
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0);
+}
+
+.collage > div > .inner {
+    overflow: visible;
+    position: absolute;
+    transform-origin: left;
+    transform-origin: left;
+    inset: 0;                        
+    background-color: var(--bg-light);
+    z-index: -1;        
+    border-radius: .7vw .7vw; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;             
+}
+
+.collage img {
+    width:100%;
+    height: 100%;
+     transform-origin: left;
+    aspect-ratio: 1;
+    display: block;
+    object-fit:cover;
+    border-radius: .7vw .7vw;
+}
+
+.collage >div:nth-child(1) {
+    grid-area: one;
+}
+
+.collage >div:nth-child(2) {
+    grid-area: two;
+}
+
+.collage >div:nth-child(3) {
+    background: var(--bg-light);
+    scale: 1.0;
+    border-radius: 0.7vw 0.7vw;
+    box-shadow: var(--shadow);
+    font-family:'Montserrat-Black';
+    font-size:6.5vh;
+    grid-area: three;
+    color: var(--secondary);
+    line-height: 16vh;
+    align-items: center;
+    text-align: center;
+    text-justify:distribute-all-lines;
+}
+
+.collage >div:nth-child(4) {
+    grid-area: four;
+}
+
+.collage >div:nth-child(5) {
+    grid-area: five;
+}
+
+.collage >div:nth-child(6) {
+    background: var(--bg-light);
+    scale: 1.0;
+    border-radius: 0.7vw 0.7vw;
+    box-shadow: var(--shadow);
+    grid-area: six;
+}
+
+.collage >div:nth-child(7) {
+    grid-area: seven;
+}
+
+.collage >div:nth-child(8) {
+    grid-area: eight;
+}
+
+.collage >div:nth-child(9) {
+    grid-area: nine;
+}
+
+.collage >div:nth-child(10) {
+    grid-area: ten;
+}
+
+.collage >div:nth-child(11) {
+    background: var(--bg-light);
+    scale: 1.0;
+    border-radius: 0.7vw 0.7vw;
+    box-shadow: var(--shadow);
+    grid-area: eleven;
+}
+
+.collage >div:nth-child(12) {
+    grid-area: twelve;
+}
+
+.collage >div:nth-child(13) {
+    grid-area: third;
+}
+
+.collage > div:hover:nth-child(3) {  
+    z-index: 2;
     animation-name: teamSelect;
     animation-duration: 0.8s;
     animation-fill-mode: forwards;
-    img{
-        animation-name: imgSelect;
-        animation-duration: 0.8s;
-        animation-fill-mode: forwards;
-    }
+    filter: grayscale(0);
 }
 
-body main ul li {
-    display: flex;
-    padding-bottom: 2vh;
+.collage > div:hover:not(.teamName) {  
+    z-index: 2;
 }
 
-body main ul li a img {
-    display: flex;
-    flex-direction: column;
-    align-self: left;
-    margin-left: 1vw;
-    margin-top: 1vh;
-    width: calc(var(--tab-width)*0.2);
-    height: calc(var(--tab-height)*0.9);
-    border-radius: .8vw .8vh;
+.collage > div:hover:not(.teamName) img {
+    animation: imgSelect .9s forwards;
 }
 
-body main ul li a{
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    justify-content: left;
-    margin-left: 1vw;
-    margin-top: 1vh;
+.collage > div:hover:not(.teamName) .inner {
+    animation: teamSelect 0.8s forwards, infoShow 1.2s forwards;
 }
 
-body main ul li a div{
-    padding-left: 5vh;
-    margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-}
 
-body main ul li a div p{
-    align-self:baseline;
-}
 
 @keyframes teamSelect{
     0%{
-        translateY: 0;
         border-radius: .7vw .7vw;
         box-shadow: var(--shadow);
-        height: var(--tab-height);
-        width: var(--tab-width);
-         background: var(--bg);
     }
     50%{
-        transform: translateX(0px) translateY(-.5vh);
+        transform: translateX(0px) translateY(-.5vh) scale(1.00);
         box-shadow: var(--shadow-long);
-        height: calc(var(--tab-height)*1.10);
-        width: calc(var(--tab-width)*1.10);
-        background: var(--bg-light);
+        border-radius: 1vw 1vw;
     }
     100%{
         background: var(--bg-light);
-        transform: translateX(0px) translateY(-.5vh);
-        scale: 1.03;
+        transform: translateX(0px) translateY(-.5vh) scale(1.00);
         border-radius: 1vw 1vw;
         box-shadow: var(--shadow-long);
-        height: calc(var(--tab-height)*1.10);
-        width: calc(var(--tab-width)*1.10);
+        
     }
 } 
 
 @keyframes imgSelect{
     0%{
-        height: var(--img-height);
-        width: var(--img-width);
+        transform: translateX(0) scale(1);
+        
+        border-radius: .7vw .7vw;
     }
     50%{
-        height: calc(var(--img-height)*1.10);
-        width: calc(var(--img-width)*1.10);
+        transform: translateX(0) translateY(-.5vh) scaleX(1.0);
+        border-radius: .6vw .6vw;
+        
     }
     100%{
-        height: calc(var(--img-height)*1.10);
-        width: calc(var(--img-width)*1.10);
+        transform: translateX(0) translateY(-.5vh) scaleX(1.0);
+        border-radius: .6vw .6vw;
     }
 } 
+
+@keyframes infoShow{
+    0%{
+    
+        background-color: var(--bg-light);
+        border-radius: .7vw .7vw;
+        opacity: 1;
+        
+    }
+    50%{
+        background-color: var(--bg-light);
+        border-radius: 1vw 1vw;
+        width:30vw;
+        opacity: 1;
+        filter: grayscale(0);
+    }
+    100%{
+        background-color: var(--bg-light);
+        border-radius: 1vw 1vw;
+        width:30vw;
+        opacity: 1;
+        filter: grayscale(0);
+    }
+}
