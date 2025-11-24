@@ -6,7 +6,6 @@ from typing import TypedDict, List, Optional, Annotated
 import operator
 
 from langgraph.graph import StateGraph, END
-from langgraph.checkpoint.sqlite import SqliteSaver
 import requests
 from openai import OpenAI
 from mutagen.mp3 import MP3
@@ -19,7 +18,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'video_agent'))
 from fetch_news import fetch_news
 from generate_summary import generate_news_script
 from video_gen import create_video_with_word_captions, create_multi_story_video, detect_smart_story_boundaries
-from video_database import initialize_database, insert_video_record, get_db_path, update_video_status
+from video_agent import create_voiceover
+from database_utils import upload_video_to_storage, upload_thumbnail_to_storage, upload_video_metadata
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -43,19 +43,23 @@ class NewsVideoState(TypedDict):
     status: str                         # Current pipeline status
 
 def fetch_news_node(state: NewsVideoState) -> dict:
+    print("[DEBUG] fetch_news_node starting...")
     try:
         stories = fetch_news(count=3)
 
+        print("[DEBUG] fetch_news_node completed")
         return {
             "stories": stories,
             "status": "news_fetched"
         }
-    
+
     except Exception as e:
+        print(f"[DEBUG] fetch_news_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
 
 def generate_script_node(state: NewsVideoState) -> dict:
+    print("[DEBUG] generate_script_node starting...")
     if state.get("error"):
         return {}
 
@@ -75,7 +79,7 @@ def generate_script_node(state: NewsVideoState) -> dict:
             script_data = {}
             story_metadata = None
 
-        print(f" Script generated ({len(script)} chars)")
+        print("[DEBUG] generate_script_node completed")
         return {
             "script": script,
             "script_data": script_data,
@@ -83,105 +87,41 @@ def generate_script_node(state: NewsVideoState) -> dict:
             "status": "script_generated"
         }
     except Exception as e:
-        print(f"L Error generating script: {e}")
+        print(f"[DEBUG] generate_script_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
 
 def create_voiceover_node(state: NewsVideoState) -> dict:
-    """Create voiceover audio using OpenAI TTS."""
-    print("\n<� [Node] Creating voiceover...")
-
+    print("[DEBUG] create_voiceover_node starting...")
     if state.get("error"):
         return {}
 
     try:
         script = state["script"]
 
-        # Setup paths
-        script_dir = Path(__file__).parent.parent / "video_agent"
-        output_path = script_dir / "voiceovers"
-        output_path.mkdir(parents=True, exist_ok=True)
+        voiceover = create_voiceover(script)
 
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        script_path = output_path / f"script_{timestamp}.txt"
-        audio_path = output_path / f"voiceover_{timestamp}.mp3"
-
-        # Save script
-        with open(script_path, 'w', encoding='utf-8') as f:
-            f.write(script)
-
-        # Generate voiceover with OpenAI TTS
-        client = OpenAI(api_key=OPENAI_API_KEY)
-        response = client.audio.speech.create(
-            model="tts-1",
-            voice="nova",
-            input=script
-        )
-        response.stream_to_file(str(audio_path))
-
-        # Get duration
-        duration = None
-        try:
-            audio_file = MP3(str(audio_path))
-            duration = audio_file.info.length
-        except Exception as e:
-            print(f"Warning: Could not determine duration: {e}")
-
-        print(f" Voiceover saved: {audio_path}")
+        print("[DEBUG] create_voiceover_node completed")
         return {
-            "audio_path": str(audio_path),
-            "script_path": str(script_path),
-            "timestamp": timestamp,
-            "duration": duration,
+            "audio_path": voiceover['audio_path'],
+            "script_path": voiceover['script_path'],
+            "timestamp": voiceover['timestamp'],
+            "duration": voiceover['duration'],
             "status": "voiceover_created"
         }
     except Exception as e:
-        print(f"L Error creating voiceover: {e}")
-        return {"error": str(e), "status": "failed"}
-
-
-def save_initial_record_node(state: NewsVideoState) -> dict:
-    """Save initial database record with processing status."""
-    print("\n=� [Node] Saving initial database record...")
-
-    if state.get("error"):
-        return {}
-
-    try:
-        story_metadata = state.get("story_metadata", {})
-
-        video_id = insert_video_record(
-            timestamp=state["timestamp"],
-            script_path=state["script_path"],
-            audio_path=state["audio_path"],
-            video_path=None,
-            headline=story_metadata.get('headline') if story_metadata else None,
-            summary=story_metadata.get('summary') if story_metadata else None,
-            source=story_metadata.get('source') if story_metadata else None,
-            duration=state.get("duration"),
-            status="processing"
-        )
-
-        print(f" Database record created: ID {video_id}")
-        return {
-            "video_id": video_id,
-            "status": "record_saved"
-        }
-    except Exception as e:
-        print(f"L Error saving to database: {e}")
+        print(f"[DEBUG] create_voiceover_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
 
 def detect_boundaries_node(state: NewsVideoState) -> dict:
-    """Detect story boundaries using Whisper transcription."""
-    print("\n=
- [Node] Detecting story boundaries...")
-
+    print("[DEBUG] detect_boundaries_node starting...")
     if state.get("error"):
         return {}
 
     try:
         story_count = state.get("story_count", 3)
+        print(f"[DEBUG] Calling detect_smart_story_boundaries with audio: {state['audio_path']}")
         story_segments = detect_smart_story_boundaries(
             state["audio_path"],
             story_count
@@ -192,21 +132,19 @@ def detect_boundaries_node(state: NewsVideoState) -> dict:
 
         boundaries = [(seg['start'], seg['end']) for seg in story_segments]
 
-        print(f" Detected {len(boundaries)} story segments")
+        print(f"[DEBUG] detect_boundaries_node completed, found {len(boundaries)} boundaries")
         return {
             "story_boundaries": boundaries,
             "story_segments": story_segments,
             "status": "boundaries_detected"
         }
     except Exception as e:
-        print(f"L Error detecting boundaries: {e}")
+        print(f"[DEBUG] detect_boundaries_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
 
 def generate_thumbnails_node(state: NewsVideoState) -> dict:
-    """Generate thumbnails for each story using DALL-E 3."""
-    print("\n=� [Node] Generating thumbnails...")
-
+    print("[DEBUG] generate_thumbnails_node starting...")
     if state.get("error"):
         return {}
 
@@ -223,7 +161,6 @@ def generate_thumbnails_node(state: NewsVideoState) -> dict:
         thumbnail_paths = []
 
         for i, segment in enumerate(story_segments):
-            print(f"  Generating thumbnail {i+1}/{story_count}...")
             thumb_path = thumbnails_dir / f"thumbnail_{timestamp}_story{i+1}.png"
 
             # Use story text for better image generation
@@ -245,22 +182,19 @@ def generate_thumbnails_node(state: NewsVideoState) -> dict:
                 f.write(img_response.content)
 
             thumbnail_paths.append(str(thumb_path))
-            print(f"   Thumbnail {i+1} saved")
 
-        print(f" Generated {len(thumbnail_paths)} thumbnails")
+        print(f"[DEBUG] generate_thumbnails_node completed, generated {len(thumbnail_paths)} thumbnails")
         return {
             "thumbnails": thumbnail_paths,
             "status": "thumbnails_generated"
         }
     except Exception as e:
-        print(f"L Error generating thumbnails: {e}")
+        print(f"[DEBUG] generate_thumbnails_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
 
 def create_video_node(state: NewsVideoState) -> dict:
-    """Create the final video with FFmpeg."""
-    print("\n<� [Node] Creating video...")
-
+    print("[DEBUG] create_video_node starting...")
     if state.get("error"):
         return {}
 
@@ -271,7 +205,6 @@ def create_video_node(state: NewsVideoState) -> dict:
         story_count = state.get("story_count", 3)
 
         if story_count > 1:
-            # Multi-story video
             success = create_multi_story_video(
                 audio_file=state["audio_path"],
                 image_files=state["thumbnails"],
@@ -279,7 +212,6 @@ def create_video_node(state: NewsVideoState) -> dict:
                 output_file=str(output_video_path)
             )
         else:
-            # Single story video
             create_video_with_word_captions(
                 audio_file=state["audio_path"],
                 image_file=state["thumbnails"][0],
@@ -290,68 +222,61 @@ def create_video_node(state: NewsVideoState) -> dict:
         if not success:
             raise Exception("Video creation failed")
 
-        print(f" Video created: {output_video_path}")
+        print(f"[DEBUG] create_video_node completed, video at: {output_video_path}")
         return {
             "video_path": str(output_video_path),
             "status": "video_created"
         }
     except Exception as e:
-        print(f"L Error creating video: {e}")
+        print(f"[DEBUG] create_video_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
 
 def finalize_record_node(state: NewsVideoState) -> dict:
-    """Update database record with final video path and completed status."""
-    print("\n [Node] Finalizing database record...")
-
+    print("[DEBUG] finalize_record_node starting...")
     if state.get("error"):
-        # Mark as failed if there was an error
-        if state.get("video_id"):
-            try:
-                update_video_status(state["video_id"], "failed")
-            except:
-                pass
-        return {"status": "failed"}
+        return {}
 
     try:
-        if state.get("video_id"):
-            update_video_status(
-                state["video_id"],
-                "completed",
-                video_path=state.get("video_path")
-            )
+        video_path = state['video_path']
 
-        print(f" Pipeline completed successfully!")
+        video_url = upload_video_to_storage(state["video_path"])
+        thumbnail_url = upload_thumbnail_to_storage(state["thumbnails"][0])
+
+        video_metadata = {
+            "date": datetime.now().strftime("%Y-%m-%d"),
+            "title": state["script_data"].get("title", "Daily News"),
+            "summary": state["script"],
+            "original_titles": state["script_data"].get("original_titles", []),
+            "sources": state["script_data"].get("sources", []),
+            "tags": state["script_data"].get("tags", [])
+        }
+
+        upload_video_metadata(video_metadata, video_url, thumbnail_url)
+
+        print("[DEBUG] finalize_record_node completed")
         return {"status": "completed"}
+
     except Exception as e:
-        print(f"L Error finalizing record: {e}")
+        print(f"[DEBUG] finalize_record_node failed: {e}")
         return {"error": str(e), "status": "failed"}
 
-def create_news_video_graph():
-    """
-    Create and compile the LangGraph workflow for news video generation.
 
-    Returns:
-        CompiledGraph: The compiled workflow graph
-    """
+def create_news_video_graph():
     workflow = StateGraph(NewsVideoState)
 
-    # Add all nodes
     workflow.add_node("fetch_news", fetch_news_node)
     workflow.add_node("generate_script", generate_script_node)
     workflow.add_node("create_voiceover", create_voiceover_node)
-    workflow.add_node("save_initial_record", save_initial_record_node)
     workflow.add_node("detect_boundaries", detect_boundaries_node)
     workflow.add_node("generate_thumbnails", generate_thumbnails_node)
     workflow.add_node("create_video", create_video_node)
     workflow.add_node("finalize_record", finalize_record_node)
 
-    # Define deterministic edges (sequential flow)
     workflow.set_entry_point("fetch_news")
     workflow.add_edge("fetch_news", "generate_script")
     workflow.add_edge("generate_script", "create_voiceover")
-    workflow.add_edge("create_voiceover", "save_initial_record")
-    workflow.add_edge("save_initial_record", "detect_boundaries")
+    workflow.add_edge("create_voiceover", "detect_boundaries")
     workflow.add_edge("detect_boundaries", "generate_thumbnails")
     workflow.add_edge("generate_thumbnails", "create_video")
     workflow.add_edge("create_video", "finalize_record")
@@ -361,58 +286,32 @@ def create_news_video_graph():
 
 
 def create_news_video_graph_with_checkpointing(db_path: str = "checkpoints.db"):
-    """
-    Create the workflow with SQLite checkpointing for resumability.
 
-    Args:
-        db_path: Path to SQLite database for checkpoints
-
-    Returns:
-        CompiledGraph: The compiled workflow with checkpointing
-    """
     workflow = StateGraph(NewsVideoState)
 
-    # Add all nodes
     workflow.add_node("fetch_news", fetch_news_node)
     workflow.add_node("generate_script", generate_script_node)
     workflow.add_node("create_voiceover", create_voiceover_node)
-    workflow.add_node("save_initial_record", save_initial_record_node)
     workflow.add_node("detect_boundaries", detect_boundaries_node)
     workflow.add_node("generate_thumbnails", generate_thumbnails_node)
     workflow.add_node("create_video", create_video_node)
     workflow.add_node("finalize_record", finalize_record_node)
 
-    # Define deterministic edges
     workflow.set_entry_point("fetch_news")
     workflow.add_edge("fetch_news", "generate_script")
     workflow.add_edge("generate_script", "create_voiceover")
-    workflow.add_edge("create_voiceover", "save_initial_record")
-    workflow.add_edge("save_initial_record", "detect_boundaries")
+    workflow.add_edge("create_voiceover", "detect_boundaries")
     workflow.add_edge("detect_boundaries", "generate_thumbnails")
     workflow.add_edge("generate_thumbnails", "create_video")
     workflow.add_edge("create_video", "finalize_record")
     workflow.add_edge("finalize_record", END)
 
-    # Add checkpointing
-    memory = SqliteSaver.from_conn_string(db_path)
-    return workflow.compile(checkpointer=memory)
+    return workflow.compile()
 
-def run_news_video_pipeline(story_count: int = 4):
-    """
-    Run the complete news video generation pipeline.
-
-    Args:
-        story_count: Number of news stories to include
-
-    Returns:
-        dict: Final state with video_path and status
-    """
+def run_news_video_pipeline(story_count: int = 3):
     print("=" * 60)
     print("=� HERMES AI News Video Pipeline")
     print("=" * 60)
-
-    # Initialize database
-    initialize_database()
 
     # Create and run the graph
     graph = create_news_video_graph()

@@ -18,27 +18,7 @@ from video_database import initialize_database, insert_video_record, get_db_path
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-
-def create_voiceover(story_count=1, output_dir="voiceovers"):
-    """
-    Fetches news, generates a summary script, and creates a voiceover audio file.
-    
-    This function:
-    1. Calls generate_news_script to fetch and summarize news
-    2. Converts the script to speech using OpenAI TTS
-    3. Saves both script and audio files with timestamps
-    4. Organizes outputs in a 'voiceovers' directory
-    
-    Args:
-        story_count (int): Number of news stories to process. Default is 1.
-        output_dir (str): Directory name for saving outputs. Default is "voiceovers".
-    
-    Returns:
-        dict: A dictionary containing:
-            - 'script_path': Path to the saved text file
-            - 'audio_path': Path to the saved MP3 file
-            - 'timestamp': The timestamp used for filenames
-    """
+def create_voiceover(script, output_dir="voiceovers"):
     # Create output directory if it doesn't exist (relative to script location)
     # Get the directory where this script is located (agents/video_agent/)
     script_dir = Path(__file__).parent.resolve()
@@ -54,25 +34,6 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     
     # Generate timestamp for filenames (format: YYYYMMDD_HHMMSS)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    
-    # Generate the news script with metadata
-    print("Fetching news and generating script...")
-    result = generate_news_script(story_count, return_metadata=True)
-    
-    # Extract script and metadata
-    if isinstance(result, dict):
-        script_data = result.get('script', {})
-        # script_data is a dict with 'summary' field (from summarize_story JSON response)
-        if isinstance(script_data, dict):
-            script = script_data.get('summary', '')
-        else:
-            # Fallback: if script_data is already a string, use it directly
-            script = str(script_data)
-        story_metadata = result.get('story_metadata')
-    else:
-        # Fallback if old format (shouldn't happen, but for safety)
-        script = result
-        story_metadata = None
     
     # Define file paths with timestamps - ALWAYS use output_path
     script_filename = f"script_{timestamp}.txt"
@@ -121,39 +82,11 @@ def create_voiceover(story_count=1, output_dir="voiceovers"):
     except Exception as e:
         print(f"Warning: Could not determine audio duration: {e}")
     
-    # Extract metadata
-    headline = story_metadata.get('headline') if story_metadata else None
-    summary = story_metadata.get('summary') if story_metadata else None
-    source = story_metadata.get('source') if story_metadata else None
-    
-    # Save to database
-    video_id = None
-    try:
-        # Verify database path is correct (use project root)
-        db_path = get_db_path()
-        print(f"Saving metadata to database at: {db_path}")
-        video_id = insert_video_record(
-            timestamp=timestamp,
-            script_path=str(script_path),
-            audio_path=str(audio_path),
-            video_path=None,
-            headline=headline,
-            summary=summary,
-            source=source,
-            duration=duration,
-            status="processing"
-        )
-        print(f"Video record created in database with ID: {video_id}")
-    except Exception as e:
-        print(f"Warning: Failed to save to database: {e}")
-    
     return {
         'script_path': str(script_path),
         'audio_path': str(audio_path),
         'timestamp': timestamp,
-        'video_id': video_id,
-        'story_metadata': story_metadata,
-        'script': script
+        'duration': duration
     }
 
 
