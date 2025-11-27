@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'news_agent'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'database'))
 from generate_summary import generate_news_script
-from video_database import initialize_database, insert_video_record, get_db_path
+from video_database import initialize_database, insert_video_record, get_db_path, update_video_path, update_video_status
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -121,6 +121,13 @@ if __name__ == "__main__":
         
         if not story_segments:
             print("❌ Failed to detect story boundaries. Aborting.")
+            # Update database status to failed
+            if result.get('video_id'):
+                try:
+                    update_video_status(result['video_id'], "failed")
+                    print(f"⚠️  Database updated: status set to 'failed'")
+                except Exception as e:
+                    print(f"⚠️  Warning: Failed to update database: {e}")
         else:
             # Generate thumbnails based on ACTUAL story text
             thumbnail_paths = []
@@ -174,8 +181,23 @@ if __name__ == "__main__":
                 
                 if success:
                     print(f"\n✅ Multi-story video created successfully: {output_video_path}")
+                    # Update database with video path and status
+                    if result.get('video_id'):
+                        try:
+                            update_video_path(result['video_id'], str(output_video_path))
+                            update_video_status(result['video_id'], "completed")
+                            print(f"✅ Database updated: video_path and status set to 'completed'")
+                        except Exception as e:
+                            print(f"⚠️  Warning: Failed to update database: {e}")
                 else:
                     print(f"\n❌ Failed to create multi-story video")
+                    # Update database status to failed
+                    if result.get('video_id'):
+                        try:
+                            update_video_status(result['video_id'], "failed")
+                            print(f"⚠️  Database updated: status set to 'failed'")
+                        except Exception as e:
+                            print(f"⚠️  Warning: Failed to update database: {e}")
             else:
                 print("❌ Error: Could not create video - missing thumbnails")
     
@@ -206,11 +228,41 @@ if __name__ == "__main__":
             print("\nGenerating video with word captions...")
             print(f"Using audio from: {result['audio_path']}")
             print(f"Using thumbnail from: {thumbnail_path}")
-            create_video_with_word_captions(
-                audio_file=result['audio_path'],
-                image_file=str(thumbnail_path),
-                output_file=str(output_video_path)
-            )
-            print(f"✅ Video created: {output_video_path}")
+            
+            try:
+                success = create_video_with_word_captions(
+                    audio_file=result['audio_path'],
+                    image_file=str(thumbnail_path),
+                    output_file=str(output_video_path)
+                )
+                
+                if success:
+                    print(f"✅ Video created: {output_video_path}")
+                    # Update database with video path and status
+                    if result.get('video_id'):
+                        try:
+                            update_video_path(result['video_id'], str(output_video_path))
+                            update_video_status(result['video_id'], "completed")
+                            print(f"✅ Database updated: video_path and status set to 'completed'")
+                        except Exception as e:
+                            print(f"⚠️  Warning: Failed to update database: {e}")
+                else:
+                    print(f"❌ Failed to create video")
+                    # Update database status to failed
+                    if result.get('video_id'):
+                        try:
+                            update_video_status(result['video_id'], "failed")
+                            print(f"⚠️  Database updated: status set to 'failed'")
+                        except Exception as e:
+                            print(f"⚠️  Warning: Failed to update database: {e}")
+            except Exception as video_error:
+                print(f"❌ Failed to create video: {video_error}")
+                # Update database status to failed
+                if result.get('video_id'):
+                    try:
+                        update_video_status(result['video_id'], "failed")
+                        print(f"⚠️  Database updated: status set to 'failed'")
+                    except Exception as e:
+                        print(f"⚠️  Warning: Failed to update database: {e}")
         except Exception as e:
             print(f"❌ Failed to generate thumbnail: {e}")
