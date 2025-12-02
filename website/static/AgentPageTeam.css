@@ -1,0 +1,287 @@
+:root {
+    /*Colors*/
+    --bg-dark: oklch(0.92 0.045 255);
+    --bg: oklch(0.96 0.045 255);
+    --bg-light: oklch(1 0.045 255);
+    --text: oklch(0.15 0.09 255);
+    --text2:oklch(0.5195 0.1021 241.56);
+    --text-muted: oklch(0.4 0.09 255);
+    --highlight: oklch(0.8245 0.0568 236.21);
+    --border: oklch(0.6 0.09 255);
+    --border-muted: oklch(0.7 0.09 255);
+    --primary: oklch(0.4 0.1 255);
+    --secondary: oklch(0.8724 0.1203 88.87);
+    --danger: oklch(0.5 0.09 30);
+    --warning: oklch(0.5 0.09 100);
+    --success: oklch(0.5 0.09 160);
+    --info: oklch(0.5 0.09 260);
+    --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg,var(--bg)30%, var(--bg-light));
+    --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    /*Size Constants*/
+    --tab-width: 70vw;
+    --tab-height: 20vh;
+    --img-width: calc(var(--tab-width)*0.2);
+    --img-height: calc(var(--tab-height)*0.9);
+
+}
+
+body.light{
+    --bg-dark: oklch(0.1 0.045 255);
+    --bg: oklch(0.15 0.045 255);
+    --bg-light: oklch(0.2 0.045 255);
+    --text: oklch(0.96 0.09 255);
+    --text2:oklch(0.5195 0.1021 241.56);
+    --text-muted: oklch(0.76 0.09 255);
+    --highlight: oklch(0.5 0.09 255);
+    --border: oklch(0.4 0.09 255);
+    --border-muted: oklch(0.3 0.09 255);
+    --primary: oklch(0.76 0.1 255);
+    --secondary: oklch(0.8724 0.1203 88.87);
+    --danger: oklch(0.7 0.09 30);
+    --warning: oklch(0.7 0.09 100);
+    --success: oklch(0.7 0.09 160);
+    --info: oklch(0.7 0.09 260);
+    --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg,var(--bg), var(--bg-light));
+    --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    --shadow: 0px 2px 2px hsla(0,0%,0%,0.07), 0px 4px 4px hsla(0,0%,0%,0.15);
+}
+
+@font-face {
+    font-family: "Montserrat-Black";
+    src: url("test-files/Holtwood_One_SC,Montserrat/Montserrat/static/Montserrat-Black.ttf") format("truetype");
+}
+
+
+body main ul li  {
+    margin-top: 2vh;
+    margin-bottom: 4vh;
+    display: flex;
+    gap: 0.5vh;
+    flex-direction: column;
+    align-items:center;
+    justify-content: left;
+}
+
+.collage{
+    position:relative;
+    padding-top: 12vh;
+    overflow:visible;
+    display:grid;
+    max-width:70vw;
+    max-height: 90vh;
+    margin-inline:auto;
+    padding-bottom: 10vh;
+    gap:2vw;
+    grid-template-rows: repeat(5,1fr);
+    grid-template-columns: repeat(8,1fr);
+
+    grid-template-areas: 
+  "one  one  .    two   .     five .  six"
+  "one  one  ten  three three five    nine ."
+  ".    eleven    ten  three three twelve .  ."
+  ". seven .   third four four . ."
+  ".  seven . .   four four eight .";
+  /* "seven seven . .  . four four . . third   third"; */
+
+}
+
+.collage > div {
+    position: relative;
+    overflow:visible;
+    border-radius: 1px;
+    border-color: var(--border);
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0);
+}
+
+.collage > div > div {
+    position:absolute;
+    overflow:visible;
+    border-radius: 1px;
+    border-color: var(--border);
+    width: 100%;
+    height: 100%;
+    filter: grayscale(0);
+}
+
+.collage > div > .inner {
+    overflow: visible;
+    position: absolute;
+    transform-origin: left;
+    transform-origin: left;
+    inset: 0;                        
+    background-color: var(--bg-light);
+    z-index: -1;        
+    border-radius: .7vw .7vw; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;             
+}
+
+.collage img {
+    width:100%;
+    height: 100%;
+     transform-origin: left;
+    aspect-ratio: 1;
+    display: block;
+    object-fit:cover;
+    border-radius: .7vw .7vw;
+}
+
+.collage >div:nth-child(1) {
+    grid-area: one;
+}
+
+.collage >div:nth-child(2) {
+    grid-area: two;
+}
+
+.collage >div:nth-child(3) {
+    background: var(--bg-light);
+    scale: 1.0;
+    border-radius: 0.7vw 0.7vw;
+    box-shadow: var(--shadow);
+    font-family:'Montserrat-Black';
+    font-size:6.5vh;
+    grid-area: three;
+    color: var(--secondary);
+    line-height: 16vh;
+    align-items: center;
+    text-align: center;
+    text-justify:distribute-all-lines;
+}
+
+.collage >div:nth-child(4) {
+    grid-area: four;
+}
+
+.collage >div:nth-child(5) {
+    grid-area: five;
+}
+
+.collage >div:nth-child(6) {
+    background: var(--bg-light);
+    scale: 1.0;
+    border-radius: 0.7vw 0.7vw;
+    box-shadow: var(--shadow);
+    grid-area: six;
+}
+
+.collage >div:nth-child(7) {
+    grid-area: seven;
+}
+
+.collage >div:nth-child(8) {
+    grid-area: eight;
+}
+
+.collage >div:nth-child(9) {
+    grid-area: nine;
+}
+
+.collage >div:nth-child(10) {
+    grid-area: ten;
+}
+
+.collage >div:nth-child(11) {
+    background: var(--bg-light);
+    scale: 1.0;
+    border-radius: 0.7vw 0.7vw;
+    box-shadow: var(--shadow);
+    grid-area: eleven;
+}
+
+.collage >div:nth-child(12) {
+    grid-area: twelve;
+}
+
+.collage >div:nth-child(13) {
+    grid-area: third;
+}
+
+.collage > div:hover:nth-child(3) {  
+    z-index: 2;
+    animation-name: teamSelect;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    filter: grayscale(0);
+}
+
+.collage > div:hover:not(.teamName) {  
+    z-index: 2;
+}
+
+.collage > div:hover:not(.teamName) img {
+    animation: imgSelect .9s forwards;
+}
+
+.collage > div:hover:not(.teamName) .inner {
+    animation: teamSelect 0.8s forwards, infoShow 1.2s forwards;
+}
+
+
+
+@keyframes teamSelect{
+    0%{
+        border-radius: .7vw .7vw;
+        box-shadow: var(--shadow);
+    }
+    50%{
+        transform: translateX(0px) translateY(-.5vh) scale(1.00);
+        box-shadow: var(--shadow-long);
+        border-radius: 1vw 1vw;
+    }
+    100%{
+        background: var(--bg-light);
+        transform: translateX(0px) translateY(-.5vh) scale(1.00);
+        border-radius: 1vw 1vw;
+        box-shadow: var(--shadow-long);
+        
+    }
+} 
+
+@keyframes imgSelect{
+    0%{
+        transform: translateX(0) scale(1);
+        
+        border-radius: .7vw .7vw;
+    }
+    50%{
+        transform: translateX(0) translateY(-.5vh) scaleX(1.0);
+        border-radius: .6vw .6vw;
+        
+    }
+    100%{
+        transform: translateX(0) translateY(-.5vh) scaleX(1.0);
+        border-radius: .6vw .6vw;
+    }
+} 
+
+@keyframes infoShow{
+    0%{
+    
+        background-color: var(--bg-light);
+        border-radius: .7vw .7vw;
+        opacity: 1;
+        
+    }
+    50%{
+        background-color: var(--bg-light);
+        border-radius: 1vw 1vw;
+        width:30vw;
+        opacity: 1;
+        filter: grayscale(0);
+    }
+    100%{
+        background-color: var(--bg-light);
+        border-radius: 1vw 1vw;
+        width:30vw;
+        opacity: 1;
+        filter: grayscale(0);
+    }
+}

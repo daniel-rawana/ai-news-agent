@@ -4,7 +4,8 @@
 <head>
     <title>News Agent Title</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="../static/AgentPageIndexStyle.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AgentPageTeam.css') }}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -12,22 +13,224 @@
     <h1>
             <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
             <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
+            <button onclick="toggle()">Theme</button>
     </h1>
 
     <nav>
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/previousnews">Previous News</a></li>
-            <li><a href="/sources">Sources</a></li>
-            <li><a href="/team">Team</a></li>
+            <li><a href="/">Today</a></li>
+            <li><a href="/previousnews">News</a></li>
+            <!--li><a href="/sources">Sources</a></li>-->
+            <li><a href="/team">About Us</a></li>
         </ul>
     </nav>
 
+ <script src="{{ url_for('static', filename='index.js') }}"></script>
 
-    <p>It's a me, Team Page!
-        Information about the team goes here.
-    </p>
+ <main>
+    <section class="collage">
+        <div>
+            <div>
+            <img src="{{news1}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div>
+            <div>
+            <img src="{{news2}}" alt="Member 1 Photo" >
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div class="teamName"> 
+             <h2> News   Team</h2>
+        </div>
+        <div>
+            <div>
+            <img src="{{news3}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div>
+            <div>
+            <img src="{{news4}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div class="teamName"> </div>
+        <div>
+            <div>
+            <img src="{{news5}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div>
+            <div>
+            <img src="{{news6}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div>
+            <div>
+            <img src="{{news7}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div>
+            <div>
+            <img src="{{news8}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div class="teamName"></div>
+        <div>
+            <div>
+            <img src="{{news9}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
+        <div>
+            <div>
+            <img src="{{news1}}" alt="Member 1 Photo">
+            </div>
+            <div class="inner">
+                <h2>
+                    Name
+                </h2>
+                <p> Information</p>
+            </div>
+        </div>
 
-
+    </section>
+</main>
 </body>
 </html>
+
+
+
+
+
+
+
+<!--
+    <main>
+        <ul>
+            <li>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+                <a> 
+                <img src="{{news1}}" alt="News 1 Thumbnail" width="200" height="150">
+                <div>
+                    <h2>Name</h2> 
+                    <p>Reelevant Info</p>
+                </div>
+                </a>
+            </li>
+        </ul>
+    </main>
+-->
