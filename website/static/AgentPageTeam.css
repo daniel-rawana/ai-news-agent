@@ -76,16 +76,19 @@ body main ul li  {
     margin-inline:auto;
     padding-bottom: 10vh;
     gap:2vw;
-    grid-template-rows: repeat(5,1fr);
-    grid-template-columns: repeat(8,1fr);
+    grid-template-rows: repeat(8,1fr);
+    grid-template-columns: repeat(11,1fr);
 
     grid-template-areas: 
-  "one  one  .    two   .     five .  six"
-  "one  one  ten  three three five    nine ."
-  ".    eleven    ten  three three twelve .  ."
-  ". seven .   third four four . ."
-  ".  seven . .   four four eight .";
-  /* "seven seven . .  . four four . . third   third"; */
+  ". . two two . . five five . six six"
+  "one one two two . . five five . six six"
+  "one one . . three  three three twelve twelve . ."
+  ". eleven eleven . three three three twelve twelve nine nine"
+  ". eleven eleven . three three three . . nine nine"
+  ". . ten ten . . . eight eight . ."
+  "seven seven ten ten . four four eight eight third third"
+  "seven seven . . . four four . . third third";
+  
 
 }
 
