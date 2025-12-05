@@ -13,6 +13,7 @@
 
   <body>
     <div class="backgroundImage">
+<<<<<<< HEAD
       <h1>
         <img
           class="logo"
@@ -37,6 +38,19 @@
           <li><a href="/previousnews">News</a></li>
           <!--li><a href="/sources">Sources</a></li>-->
           <li><a href="/team">About Us</a></li>
+=======
+    <nav>
+        <div class="nav-left">
+            <img class="logo" src="{{HermesLogo}}" alt="Page Logo">
+            <img class="namelogo" src="{{HermesName}}" alt="Page Name">
+        </div>
+        <ul class="nav-right">
+            <li><a href="/">Today</a></li>
+            <li><a href="/previousnews">News</a></li>
+            <li><a href="/team">About Us</a></li>
+            <li><a href="/agent">Agent</a></li>
+            <li><button onclick="toggle()">Theme</button></li>
+>>>>>>> main
         </ul>
       </nav>
 
@@ -52,6 +66,7 @@
           </li>
           <div class="LowerHalf">
             <div class="TagsandText">
+<<<<<<< HEAD
               <a>
                 <div>
                   <h2>{{ video.summarized_title }}</h2>
@@ -67,6 +82,33 @@
               </a>
             </div>
           </div>
+=======
+                <div class="titleSection">
+                    <h2>{{ title }}</h2>
+                    <div class="tagList" id="tagList">
+                        {% for tag in tags %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="transcriptSection">
+                    <p>{{ transcript }}</p>
+                </div>
+            </div>
+            <div class="sourcesIndex">
+                <h2>Sources</h2>
+                {% if sources %}
+                <ul class="sourcesList">
+                    {% for source in sources %}
+                    <li><a href="{{ source.url }}" target="_blank">{{ source.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No sources available</p>
+                {% endif %}
+            </div>  
+            </div>  
+>>>>>>> main
         </ul>
       </main>
       <script src="{{ url_for('static', filename='index.js') }}"></script>

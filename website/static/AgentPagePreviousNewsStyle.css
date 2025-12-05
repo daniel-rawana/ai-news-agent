@@ -1,3 +1,18 @@
+/* Dogica Font */
+@font-face {
+    font-family: 'Dogica';
+    src: url('test-files/dogica/TTF/dogica.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dogica';
+    src: url('test-files/dogica/TTF/dogicabold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 :root {
 
     /*Colors*/
@@ -47,11 +62,6 @@ body.light{
     --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
     --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
     --shadow: 0px 2px 2px hsla(0,0%,0%,0.07), 0px 4px 4px hsla(0,0%,0%,0.15);
-}
-
-@font-face {
-    font-family: "Montserrat-Black";
-    src: url("test-files/Holtwood_One_SC,Montserrat/Montserrat/static/Montserrat-Black.ttf") format("truetype");
 }
 
 body main ul {
@@ -124,8 +134,8 @@ body main ul li a h2 {
     padding-right: calc(var(--tab-width)*0.05);
     color: var(--text-muted);
     width: calc(var(--tab-width)*0.9);
-    font-size: medium;
-    font-family: 'Montserrat-Black', Helvetica, Arial, sans-serif;
+    font-size: x-small;
+    font-family: 'Dogica', monospace;
     align-self:center;
     text-align: center;
     padding-top: calc(var(--tab-width)*0.05);
@@ -133,12 +143,18 @@ body main ul li a h2 {
 }
 
 body main ul li a h2.Tags {
-    font-size: small;
-    font-family: 'Montserrat-Black', Helvetica, Arial, sans-serif;
-    text-align:left;
+    font-size: x-small;
+    font-family: 'Dogica', monospace;
+    text-align: left;
     align-self: flex-start;
     padding-top: 0;
     padding-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
 }
 
 body main ul li a p {
@@ -146,7 +162,7 @@ body main ul li a p {
     width: calc(var(--tab-width)*0.9);
     padding-left: calc(var(--tab-width)*0.05);
     padding-right: calc(var(--tab-width)*0.05);
-    font-family:  'Montserrat-Black', Helvetica, Arial, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     align-self: flex-start;
     text-align:left;
     color: var(--text2);
