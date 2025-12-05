@@ -167,12 +167,27 @@ def generate_thumbnails_node(state: NewsVideoState) -> dict:
             story_preview = segment.get('text', '')[:150]
             prompt = f"Create a professional news thumbnail image for this story: {story_preview}. Style: modern news broadcast, clean, professional, high quality. Do not include any text in the image."
 
-            response = client.images.generate(
-                model="dall-e-3",
-                prompt=prompt,
-                n=1,
-                size="1024x1024"
-            )
+            # Try generating with the story prompt, fallback to generic if content policy violation
+            try:
+                response = client.images.generate(
+                    model="dall-e-3",
+                    prompt=prompt,
+                    n=1,
+                    size="1024x1024"
+                )
+            except Exception as dalle_error:
+                error_str = str(dalle_error)
+                if "content_policy_violation" in error_str or "safety system" in error_str:
+                    print(f"[DEBUG] Content policy violation for thumbnail {i+1}, using generic prompt")
+                    # Retry with ultra-safe generic prompt
+                    response = client.images.generate(
+                        model="dall-e-3",
+                        prompt="Abstract modern news broadcast background, professional studio setting, blue and white color scheme, minimalist design, geometric shapes, no text, no people",
+                        n=1,
+                        size="1024x1024"
+                    )
+                else:
+                    raise
 
             image_url = response.data[0].url
             img_response = requests.get(image_url)
