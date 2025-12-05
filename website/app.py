@@ -18,15 +18,6 @@ sys.path.insert(0, os.path.join(project_root, 'agents', 'database'))
 
 from orchestration_agent import create_news_video_graph
 
-# Add agents directory to path BEFORE importing orchestration_agent
-project_root = os.path.dirname(os.path.dirname(__file__))
-sys.path.insert(0, os.path.join(project_root, 'agents', 'orchestration_agent'))
-sys.path.insert(0, os.path.join(project_root, 'agents', 'news_agent'))
-sys.path.insert(0, os.path.join(project_root, 'agents', 'video_agent'))
-sys.path.insert(0, os.path.join(project_root, 'agents', 'database'))
-
-from orchestration_agent import create_news_video_graph
-
 supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
 
 app = Flask(__name__)
