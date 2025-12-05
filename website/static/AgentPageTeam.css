@@ -137,10 +137,12 @@ body main ul li  {
 }
 
 .collage >div:nth-child(1) {
+    font-family:'Montserrat-Black';
     grid-area: one;
 }
 
 .collage >div:nth-child(2) {
+    font-family:'Montserrat-Black';
     grid-area: two;
 }
 
@@ -160,10 +162,12 @@ body main ul li  {
 }
 
 .collage >div:nth-child(4) {
+    font-family:'Montserrat-Black';
     grid-area: four;
 }
 
 .collage >div:nth-child(5) {
+    font-family:'Montserrat-Black';
     grid-area: five;
 }
 
@@ -173,22 +177,27 @@ body main ul li  {
     border-radius: 0.7vw 0.7vw;
     box-shadow: var(--shadow);
     grid-area: six;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(7) {
     grid-area: seven;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(8) {
     grid-area: eight;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(9) {
     grid-area: nine;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(10) {
     grid-area: ten;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(11) {
@@ -197,14 +206,17 @@ body main ul li  {
     border-radius: 0.7vw 0.7vw;
     box-shadow: var(--shadow);
     grid-area: eleven;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(12) {
     grid-area: twelve;
+    font-family:'Montserrat-Black';
 }
 
 .collage >div:nth-child(13) {
     grid-area: third;
+    font-family:'Montserrat-Black';
 }
 
 .collage > div:hover:nth-child(3) {  
