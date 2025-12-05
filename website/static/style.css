@@ -74,7 +74,7 @@ header {
     margin: 2rem auto;
     padding: 1rem;
     background-color: white;
-    border-radius: 16;
+    border-radius: 2vw;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
@@ -82,9 +82,14 @@ header {
     position: relative;
     width: 100%;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 0vw;
     
 }
+
+h2 {
+    line-height: 1.4;
+}
+
 .video{
     height: 500px;
     width: 500px;
