@@ -117,7 +117,7 @@ body main ul li  {
 }
 
 .collage > div > .inner {
-    overflow: visible;
+    overflow: hidden;
     position: absolute;
     transform-origin: left;
     transform-origin: left;
