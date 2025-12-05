@@ -1,0 +1,92 @@
+:root {
+    /*Colors*/
+    --bg-dark: oklch(0.92 0.045 255);
+    --bg: oklch(0.96 0.045 255);
+    --bg-light: oklch(1 0.045 255);
+    --text: oklch(0.15 0.09 255);
+    --text2:oklch(0.5195 0.1021 241.56);
+    --text-muted: oklch(0.4 0.09 255);
+    --highlight: oklch(0.8245 0.0568 236.21);
+    --border: oklch(0.6 0.09 255);
+    --border-muted: oklch(0.7 0.09 255);
+    --primary: oklch(0.4 0.1 255);
+    --secondary: oklch(0.8724 0.1203 88.87);
+    --danger: oklch(0.5 0.09 30);
+    --warning: oklch(0.5 0.09 100);
+    --success: oklch(0.5 0.09 160);
+    --info: oklch(0.5 0.09 260);
+    --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg,var(--bg)30%, var(--bg-light));
+    --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    /*Size Constants*/
+    --tab-width: 70vw;
+    --tab-height: 20vh;
+    --img-width: calc(var(--tab-width)*0.2);
+    --img-height: calc(var(--tab-height)*0.9);
+
+}
+
+body.light{
+    --bg-dark: oklch(0.1 0.045 255);
+    --bg: oklch(0.15 0.045 255);
+    --bg-light: oklch(0.2 0.045 255);
+    --text: oklch(0.96 0.09 255);
+    --text2:oklch(0.5195 0.1021 241.56);
+    --text-muted: oklch(0.76 0.09 255);
+    --highlight: oklch(0.5 0.09 255);
+    --border: oklch(0.4 0.09 255);
+    --border-muted: oklch(0.3 0.09 255);
+    --primary: oklch(0.76 0.1 255);
+    --secondary: oklch(0.8724 0.1203 88.87);
+    --danger: oklch(0.7 0.09 30);
+    --warning: oklch(0.7 0.09 100);
+    --success: oklch(0.7 0.09 160);
+    --info: oklch(0.7 0.09 260);
+    --gradient: linear-gradient(0deg,var(--bg) 95%, var(--bg-light));
+    --gradient-hover: linear-gradient(0deg,var(--bg), var(--bg-light));
+    --nav-gradient:linear-gradient(0deg,var(--primary) 95%, var(--border));
+    --nav-gradient-hover:linear-gradient(0deg,var(--primary), var(--border));
+    --shadow: 0px 2px 2px hsla(0,0%,0%,0.07), 0px 4px 4px hsla(0,0%,0%,0.15);
+}
+
+
+
+/* body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+} */
+
+
+header {
+    background-color: #1e90ff;
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    letter-spacing: 1px;
+}
+
+.video-section {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 16;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    
+}
+.video{
+    height: 500px;
+    width: 500px;
+    
+}

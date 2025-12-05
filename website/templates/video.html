@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Section Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+    <h1>
+            <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
+            <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
+            <button onclick="toggle()">Theme</button>
+    </h1>
+
+    <nav>
+        <ul>
+            <li><a href="/">Today</a></li>
+            <li><a href="/previousnews">News</a></li>
+            <!--li><a href="/sources">Sources</a></li>-->
+            <li><a href="/team">About Us</a></li>
+        </ul>
+    </nav>
+
+
+    <header>
+        <h1>Our Featured Video</h1>
+    </header>
+
+
+    <main class="video-section">
+
+        <div class="video-container">
+            <div class="video-container">
+                <iframe class="video"
+                    src='{{video}}' type="video/mp4"
+                    title="Youtube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            
+         <div clas="video-description">
+             <h2>About This Video</h2>
+            <p>
+                Giggity
+            </p>
+        </div>
+    </main>
+
+</body>
+</html>
