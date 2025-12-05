@@ -14,6 +14,5 @@ function fetchVideoData() {
 }
 
 
-
 loadingTagsOnVideo();
 
