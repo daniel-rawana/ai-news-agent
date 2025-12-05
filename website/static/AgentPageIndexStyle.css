@@ -227,8 +227,9 @@ body main ul div.sourcesIndex {
     display: flex;
     align-self: auto;
     flex-direction: column;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: flex-start;
+    padding: 2vh 2vw;
     margin-top: 2vh;
     margin-bottom: 2vh;
     background: var(--gradient);
@@ -236,20 +237,73 @@ body main ul div.sourcesIndex {
     border-top: solid 1px var(--highlight);
     background-color: var(--bg);
     width: 20vw;
-    height: 20vh;
+    min-height: 20vh;
+    max-height: 40vh;
+    overflow-y: auto;
     border-radius: .8vw .8vw .8vw .8vw;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-     box-shadow: var(--shadow);
+    box-shadow: var(--shadow);
+}
 
+body main ul div.sourcesIndex h2 {
+    color: var(--text);
+    font-size: 1.3em;
+    margin-bottom: 1vh;
+    width: 100%;
+}
+
+body main ul div.sourcesIndex .sourcesList {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body main ul div.sourcesIndex .sourcesList li {
+    margin-bottom: 0.3vh;
+    width: 100%;
+    list-style: none;
+}
+
+body main ul div.sourcesIndex .sourcesList li a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9em;
+    word-wrap: break-word;
+    display: block;
+    width: auto;
+    height: auto;
+    background: var(--bg-light);
+    border: 1px solid var(--border-muted);
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
+    padding: 0.4vh 1vw;
+    border-radius: 0.4vw;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+body main ul div.sourcesIndex .sourcesList li a:hover {
+    background: var(--primary);
+    color: var(--bg-light);
+    border-color: var(--primary);
+    transform: translateX(4px);
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+}
+
+body main ul div.sourcesIndex p {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    width: 100%;
+    text-align: left;
+    margin: 0;
 }
 
 body main ul div.TagsandText {
     display: flex;
     align-self: auto;
     flex-direction: column;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: flex-start;
+    padding: 2vh 2vw;
     margin-top: 2vh;
     margin-bottom: 2vh;
     background: var(--gradient);
@@ -257,12 +311,36 @@ body main ul div.TagsandText {
     border-top: solid 1px var(--highlight);
     background-color: var(--bg);
     width: 56vw;
-    height: 20vh;
+    min-height: 20vh;
+    max-height: 40vh;
+    overflow-y: auto;
     border-radius: .8vw .8vw .8vw .8vw;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-     box-shadow: var(--shadow);
+    box-shadow: var(--shadow);
+}
 
+body main ul div.TagsandText .titleSection {
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+body main ul div.TagsandText .titleSection h2 {
+    color: var(--text);
+    font-size: 1.5em;
+    margin-bottom: 1vh;
+    word-wrap: break-word;
+}
+
+body main ul div.TagsandText .transcriptSection {
+    width: 100%;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+body main ul div.TagsandText .transcriptSection p {
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    margin: 0;
 }
 
 body main ul li.mainvid{
@@ -342,19 +420,20 @@ iframe {
 .tagList{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5vw;
+    align-items: center;
+    margin-bottom: 1vh;
 }
 
-.tagList > * {
-    display: inline-flex;
+.tagList .tag {
+    display: inline-block;
     border: 1px solid var(--border);
-    background-color: var(--bg);
-    border-radius: 10vw;
-    padding: 0 0.8vw;
-    height: 2.4vh;
-}
-
-.tag{
+    background-color: var(--bg-dark);
+    border-radius: 1vw;
+    padding: 0.4vh 1vw;
+    font-size: 0.85em;
     color: var(--text);
+    white-space: nowrap;
 }
     
