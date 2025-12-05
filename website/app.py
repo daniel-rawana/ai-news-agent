@@ -129,12 +129,12 @@ def previousnews():
     response = supabase.table('videos').select('id, thumbnail_url, summarized_title, date').execute()
     thumbnail_items = response.data
     
-    seen_dates = set()
+    seen_ids = set()
     news_items = []
     
     for item in thumbnail_items:
-        if item['date'] not in seen_dates:
-            seen_dates.add(item['date'])
+        if item['id'] not in seen_ids:
+            seen_ids.add(item['id'])
             news_items.append(item)
     
     return render_template('previousnews.html', news_items=news_items)
