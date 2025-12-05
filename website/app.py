@@ -35,12 +35,50 @@ def inject_hermes_assets():
 
 @app.route("/")
 def index():
-    mainvideo = supabase.table('videos').select('*').execute()
-    videos = mainvideo.data
+    # Fetch latest video with related data
+    mainvideo = supabase.table('videos').select(
+        '*, original_titles(*), video_sources(sources(*)), video_tags(tags(*))'
+    ).order('id', desc=True).limit(1).execute()
+    
+    video_data = mainvideo.data[0] if mainvideo.data else None
+    
+    if video_data:
+        video_url = video_data.get('video_url')
+        title = video_data.get('summarized_title', 'News Title')
+        # Use summary as transcript since there's no transcript field
+        transcript = video_data.get('summary', 'No description available.')
+        
+        # Extract sources with name and URL
+        sources = []
+        if video_data.get('video_sources'):
+            for vs in video_data['video_sources']:
+                source = vs.get('sources')
+                if source:
+                    sources.append({
+                        'name': source.get('name', 'Unknown Source'),
+                        'url': source.get('base_url', '#')
+                    })
+        
+        # Extract tags/genres
+        tags = []
+        if video_data.get('video_tags'):
+            for vt in video_data['video_tags']:
+                tag = vt.get('tags')
+                if tag and tag.get('name'):
+                    tags.append(tag['name'])
+    else:
+        video_url = None
+        title = 'No video available'
+        transcript = ''
+        sources = []
+        tags = []
 
-    video_url = videos[0]['video_url'] if videos else None
-
-    return render_template('index.html', video=video_url)
+    return render_template('index.html', 
+                         video=video_url, 
+                         title=title, 
+                         transcript=transcript,
+                         sources=sources,
+                         tags=tags)
 
 @app.route("/previousnews")
 def previousnews():

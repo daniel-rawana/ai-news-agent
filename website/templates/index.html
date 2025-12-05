@@ -38,19 +38,29 @@
             </li>
             <div class = "LowerHalf">
             <div class="TagsandText">
-                <a>
-                    <div><h2>News Title</h2>
-                    <div class="tagList" id="tagList"></div>
+                <div class="titleSection">
+                    <h2>{{ title }}</h2>
+                    <div class="tagList" id="tagList">
+                        {% for tag in tags %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
                     </div>
-                    <p>Possible Transcript of Video Text.
-                    </p>
-                </a>  
+                </div>
+                <div class="transcriptSection">
+                    <p>{{ transcript }}</p>
+                </div>
             </div>
             <div class="sourcesIndex">
-                <a>
-                    <h2>Sources</h2>
-                    <p>Listed here:</p>
-                </a>
+                <h2>Sources</h2>
+                {% if sources %}
+                <ul class="sourcesList">
+                    {% for source in sources %}
+                    <li><a href="{{ source.url }}" target="_blank">{{ source.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No sources available</p>
+                {% endif %}
             </div>  
             </div>  
         </ul>
