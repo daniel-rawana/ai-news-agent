@@ -281,11 +281,12 @@ body main ul div.TagsandText {
     border-top: solid 1px var(--highlight);
     background-color: var(--bg);
     width: 56vw;
-    height: 20vh;
+    height: auto;
     border-radius: .8vw .8vw .8vw .8vw;
     margin-top: 2vh;
     margin-bottom: 2vh;
-     box-shadow: var(--shadow);
+    box-shadow: var(--shadow);
+    overflow-y: auto;
 
 }
 

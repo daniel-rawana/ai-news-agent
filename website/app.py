@@ -4,6 +4,7 @@ load_dotenv()
 import os
 from flask import Flask, render_template, url_for
 from supabase import create_client
+from datetime import date
 
 supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
 
@@ -19,18 +20,30 @@ def inject_hermes_assets():
 
 @app.route("/")
 def index():
-    mainvideo = supabase.table('videos').select('*').execute()
-    videos = mainvideo.data
-
-    video_url = videos[0]['video_url'] if videos else None
-
-    return render_template('index.html', video=video_url)
+    response = supabase.table('videos').select('*').order('date', desc=True).execute()
+    videos = response.data
+    
+    today = date.today().isoformat()  # Gets today's date as 'YYYY-MM-DD'
+    
+    # Look for a video with today's date
+    todays_video = None
+    for video in videos:
+        if video['date'] == today and video['video_url']:
+            todays_video = video
+            break
+    
+    # If no video for today, use the latest one
+    if todays_video is None:
+        todays_video = videos[0] if videos else None
+    
+    return render_template('index.html', video=todays_video)
 
 @app.route("/previousnews")
 def previousnews():
 
     response = supabase.table('videos').select('id, thumbnail_url, summarized_title, date').execute()
     thumbnail_items = response.data
+
     
     seen_dates = set()
     news_items = []

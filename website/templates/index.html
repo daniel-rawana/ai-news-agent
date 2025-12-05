@@ -1,60 +1,75 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>News Agent Title</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
 
-<body>
+  <body>
     <div class="backgroundImage">
-    <h1>
-            <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
-            <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
-            <button onclick="toggle()">Theme</button>
-    </h1>
+      <h1>
+        <img
+          class="logo"
+          src="{{HermesLogo}}"
+          alt="Page Logo"
+          width="200"
+          height="150"
+        />
+        <img
+          class="namelogo"
+          src="{{HermesName}}"
+          alt="Page Name"
+          width="400"
+          height="100"
+        />
+        <button onclick="toggle()">Theme</button>
+      </h1>
 
-    <nav>
+      <nav>
         <ul>
-            <li><a href="/">Today</a></li>
-            <li><a href="/previousnews">News</a></li>
-            <!--li><a href="/sources">Sources</a></li>-->
-            <li><a href="/team">About Us</a></li>
+          <li><a href="/">Today</a></li>
+          <li><a href="/previousnews">News</a></li>
+          <!--li><a href="/sources">Sources</a></li>-->
+          <li><a href="/team">About Us</a></li>
         </ul>
-    </nav>
+      </nav>
 
-    <main class="indexmain">
+      <main class="indexmain">
         <ul>
-             <li class="mainvid">
-                <a class="videoPlayer">
-                    <video autoplay muted controls > 
-                        <source src='{{video}}' type="video/mp4"> 
-                        Your browser does not support the video tag.
-                    </video>
-                </a>
-            </li>
-            <div class = "LowerHalf">
+          <li class="mainvid">
+            <a class="videoPlayer">
+              <video autoplay muted controls>
+                <source src="{{video.video_url}}" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </a>
+          </li>
+          <div class="LowerHalf">
             <div class="TagsandText">
-                <a>
-                    <div><h2>News Title</h2>
-                    <div class="tagList" id="tagList"></div>
-                    </div>
-                    <p>Possible Transcript of Video Text.
-                    </p>
-                </a>  
+              <a>
+                <div>
+                  <h2>{{ video.summarized_title }}</h2>
+                  <div class="tagList" id="tagList"></div>
+                </div>
+                <p>{{ video.summary }}</p>
+              </a>
             </div>
             <div class="sourcesIndex">
-                <a>
-                    <h2>Sources</h2>
-                    <p>Listed here:</p>
-                </a>
-            </div>  
-            </div>  
+              <a>
+                <h2>Sources</h2>
+                <p>Listed here:</p>
+              </a>
+            </div>
+          </div>
         </ul>
-    </main>
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+      </main>
+      <script src="{{ url_for('static', filename='index.js') }}"></script>
     </div>
-</body>
+  </body>
 </html>
