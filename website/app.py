@@ -2,13 +2,29 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
+import sys
+import threading
+import uuid
+import queue
 from flask import Flask, render_template, url_for
 from supabase import create_client
 from datetime import date
 
+# Add agents directory to path BEFORE importing orchestration_agent
+project_root = os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(project_root, 'agents', 'orchestration_agent'))
+sys.path.insert(0, os.path.join(project_root, 'agents', 'news_agent'))
+sys.path.insert(0, os.path.join(project_root, 'agents', 'video_agent'))
+sys.path.insert(0, os.path.join(project_root, 'agents', 'database'))
+
+from orchestration_agent import create_news_video_graph
+
 supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
 
 app = Flask(__name__)
+
+# Store active tasks and their status queues
+active_tasks = {}
 
 @app.context_processor
 def inject_hermes_assets():
@@ -61,17 +77,20 @@ def sources():
 
 @app.route("/team")
 def team():
-    linknews1 = url_for('static', filename='test-files/one.jpeg')
-    linknews2 = url_for('static', filename='test-files/two.jpg')
-    linknews3 = url_for('static', filename='test-files/three.webp')
-    linknews4 = url_for('static', filename='test-files/four.jpg')
-    linknews5 = url_for('static', filename='test-files/five.webp')
-    linknews6 = url_for('static', filename='test-files/six.jpg')
-    linknews7 = url_for('static', filename='test-files/seven.webp')
-    linknews8 = url_for('static', filename='test-files/eight.webp')
-    linknews9 = url_for('static', filename='test-files/nine.webp')
+    teamimg1 = url_for('static', filename='team_photos/DanielRawana.jpg')
+    teamimg2 = url_for('static', filename='team_photos/RicknySanon.jpg')
+    teamimg3 = url_for('static', filename='team_photos/EduardoGoncalvez.jpg')
+    teamimg4 = url_for('static', filename='team_photos/GabrielRicadoAlamo.png')
+    teamimg5 = url_for('static', filename='team_photos/RembertoSilva.jpg')
+    teamimg6 = url_for('static', filename='team_photos/MohammedAlSaleh.jpg')
+    teamimg7 = url_for('static', filename='team_photos/AlexWaisman.jpg')
+    teamimg8 = url_for('static', filename='team_photos/JustinPalma.jpg')
+    teamimg9 = url_for('static', filename='team_photos/jona.png')
+    teamimg10 = url_for('static', filename='team_photos/AryanRahman.png')
+    teamimg11 = url_for('static', filename='team_photos/RobertoMachin.png')
+    teamimg13 = url_for('static', filename='team_photos/AlfonsinaCardenas.png')
 
-    return render_template('team.html',news1 = linknews1,news2 = linknews2,news3 = linknews3,news4 = linknews4,news5 = linknews5,news6 = linknews6,news7 = linknews7,news8 = linknews8,news9 = linknews9)
+    return render_template('team.html',pick1 = teamimg1,pick2 = teamimg2,pick3 = teamimg3,pick4 = teamimg4,pick5 = teamimg5,pick6 = teamimg6,pick7 = teamimg7,pick8 = teamimg8,pick9 = teamimg9,pick10 = teamimg10,pick11 = teamimg11,pick13 = teamimg13)
 
 @app.route("/video/<int:id>")
 def video(id):

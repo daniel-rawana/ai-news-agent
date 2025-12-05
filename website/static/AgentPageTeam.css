@@ -11,6 +11,7 @@
     --border-muted: oklch(0.7 0.09 255);
     --primary: oklch(0.4 0.1 255);
     --secondary: oklch(0.8724 0.1203 88.87);
+    --tertiary: oklch(0.515 0.1033 243.52);
     --danger: oklch(0.5 0.09 30);
     --warning: oklch(0.5 0.09 100);
     --success: oklch(0.5 0.09 160);
@@ -39,6 +40,7 @@ body.light{
     --border-muted: oklch(0.3 0.09 255);
     --primary: oklch(0.76 0.1 255);
     --secondary: oklch(0.8724 0.1203 88.87);
+    --tertiary: oklch(0.515 0.1033 243.52);
     --danger: oklch(0.7 0.09 30);
     --warning: oklch(0.7 0.09 100);
     --success: oklch(0.7 0.09 160);
@@ -77,17 +79,17 @@ body main ul li  {
     padding-bottom: 10vh;
     gap:2vw;
     grid-template-rows: repeat(8,1fr);
-    grid-template-columns: repeat(11,1fr);
+    grid-template-columns: repeat(12,1fr);
 
     grid-template-areas: 
-  ". . two two . . five five . six six"
-  "one one two two . . five five . six six"
-  "one one . . three  three three twelve twelve . ."
-  ". eleven eleven . three three three twelve twelve nine nine"
-  ". eleven eleven . three three three . . nine nine"
-  ". . ten ten . . . eight eight . ."
-  "seven seven ten ten . four four eight eight third third"
-  "seven seven . . . four four . . third third";
+  ". . . two two . . five five . six six"
+  ". one one two two . . five five . six six"
+  ". one one . three three  three three twelve twelve . ."
+  ". . eleven eleven three three three three twelve twelve nine nine"
+  "fourth fourth eleven eleven three three three three . . nine nine"
+  "fourth fourth . ten ten . . . eight eight . ."
+  ". seven seven ten ten . four four eight eight third third"
+  ". seven seven . . . four four . . third third";
   
 
 }
@@ -123,7 +125,7 @@ body main ul li  {
     border-radius: .7vw .7vw; 
     display: flex;
     flex-direction: column;
-    align-items: center;             
+    align-items: left;             
 }
 
 .collage img {
@@ -152,7 +154,7 @@ body main ul li  {
     border-radius: 0.7vw 0.7vw;
     box-shadow: var(--shadow);
     font-family:'Montserrat-Black';
-    font-size:6.5vh;
+    font-size:9vh;
     grid-area: three;
     color: var(--secondary);
     line-height: 16vh;
@@ -172,10 +174,6 @@ body main ul li  {
 }
 
 .collage >div:nth-child(6) {
-    background: var(--bg-light);
-    scale: 1.0;
-    border-radius: 0.7vw 0.7vw;
-    box-shadow: var(--shadow);
     grid-area: six;
     font-family:'Montserrat-Black';
 }
@@ -201,10 +199,6 @@ body main ul li  {
 }
 
 .collage >div:nth-child(11) {
-    background: var(--bg-light);
-    scale: 1.0;
-    border-radius: 0.7vw 0.7vw;
-    box-shadow: var(--shadow);
     grid-area: eleven;
     font-family:'Montserrat-Black';
 }
@@ -219,6 +213,11 @@ body main ul li  {
     font-family:'Montserrat-Black';
 }
 
+.collage >div:nth-child(14) {
+    grid-area: fourth;
+    font-family:'Montserrat-Black';
+}
+
 .collage > div:hover:nth-child(3) {  
     z-index: 2;
     animation-name: teamSelect;
@@ -227,8 +226,17 @@ body main ul li  {
     filter: grayscale(0);
 }
 
+
 .collage > div:hover:not(.teamName) {  
-    z-index: 2;
+    z-index: 2; 
+}
+
+.collage > div:hover:not(.teamName) .inner h2 {
+    color: var(--secondary);
+}
+
+.collage > div:hover:not(.teamName) .inner p {
+    color: var(--primary);
 }
 
 .collage > div:hover:not(.teamName) img {
@@ -236,10 +244,8 @@ body main ul li  {
 }
 
 .collage > div:hover:not(.teamName) .inner {
-    animation: teamSelect 0.8s forwards, infoShow 1.2s forwards;
+    animation: teamSelect 0.8s forwards, infoShow 0.8s forwards, disaplaceText 1.2s forwards;
 }
-
-
 
 @keyframes teamSelect{
     0%{
@@ -283,20 +289,32 @@ body main ul li  {
         background-color: var(--bg-light);
         border-radius: .7vw .7vw;
         opacity: 1;
-        
+        filter: grayscale(1);
     }
     50%{
         background-color: var(--bg-light);
         border-radius: 1vw 1vw;
-        width:30vw;
+        width:22vw;
         opacity: 1;
         filter: grayscale(0);
     }
     100%{
         background-color: var(--bg-light);
         border-radius: 1vw 1vw;
-        width:30vw;
+        width:22vw;
         opacity: 1;
         filter: grayscale(0);
+    }
+}
+
+@keyframes disaplaceText{
+    0%{
+        
+    }
+    50%{
+         padding-left: 11vw; 
+    }
+    100%{
+         padding-left: 11vw; 
     }
 }
