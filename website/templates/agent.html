@@ -64,51 +64,36 @@
 
             .status-container {
                 margin-top: 30px;
-                padding: 20px;
+                padding: 40px 20px;
                 background: #f8f9fa;
                 border-radius: 5px;
-                border-left: 4px solid #007bff;
                 display: none;
+                text-align: center;
             }
 
             .status-container.active {
                 display: block;
             }
 
-            .status-title {
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 15px;
+            .loading-spinner {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 30px;
+                border: 8px solid #f3f3f3;
+                border-top: 8px solid #007bff;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
             }
 
-            .status-step {
-                padding: 10px;
-                margin-bottom: 10px;
-                background: white;
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
 
-            .status-step.completed {
-                border-left: 4px solid #28a745;
-            }
-
-            .status-step.in-progress {
-                border-left: 4px solid #ffc107;
-            }
-
-            .status-step.pending {
-                border-left: 4px solid #ddd;
-            }
-
-            .status-step.error {
-                border-left: 4px solid #dc3545;
-            }
-
-            .status-icon {
-                margin-right: 10px;
-                font-size: 20px;
+            .status-text {
+                font-size: 16px;
+                color: #555;
+                margin-top: 20px;
             }
 
             .video-container {
@@ -184,8 +169,8 @@
         </form>
 
         <div class="status-container" id="statusContainer">
-            <div class="status-title">Video Generation Progress</div>
-            <div id="statusSteps"></div>
+            <div class="loading-spinner"></div>
+            <div class="status-text" id="statusText">Initializing pipeline...</div>
         </div>
 
         <div class="error-message" id="errorMessage"></div>
@@ -205,15 +190,15 @@
         const generatedVideo = document.getElementById('generatedVideo');
         const errorMessage = document.getElementById('errorMessage');
 
-        const steps = {
-            'starting': { label: 'Initializing pipeline', icon: '🚀' },
-            'news_fetched': { label: 'Fetching news articles', icon: '📰' },
-            'script_generated': { label: 'Generating news script', icon: '✍️' },
-            'voiceover_created': { label: 'Creating voiceover', icon: '🎙️' },
-            'boundaries_detected': { label: 'Detecting story boundaries', icon: '🎯' },
-            'thumbnails_generated': { label: 'Generating thumbnails', icon: '🖼️' },
-            'video_created': { label: 'Creating video', icon: '🎬' },
-            'completed': { label: 'Finalizing and uploading', icon: '✅' }
+        const statusMessages = {
+            'starting': 'Initializing pipeline...',
+            'news_fetched': 'Fetching news articles...',
+            'script_generated': 'Generating news script...',
+            'voiceover_created': 'Creating voiceover...',
+            'boundaries_detected': 'Detecting story boundaries...',
+            'thumbnails_generated': 'Generating thumbnails...',
+            'video_created': 'Creating video...',
+            'completed': 'Finalizing and uploading...'
         };
 
         form.addEventListener('submit', async (e) => {
@@ -225,21 +210,9 @@
             statusContainer.classList.add('active');
             videoContainer.classList.remove('active');
             errorMessage.classList.remove('active');
-            statusSteps.innerHTML = '';
+            document.getElementById('statusText').textContent = 'Initializing pipeline...';
             generateBtn.disabled = true;
             generateBtn.textContent = 'Generating...';
-
-            // Initialize status steps
-            Object.keys(steps).forEach(key => {
-                const stepDiv = document.createElement('div');
-                stepDiv.className = 'status-step pending';
-                stepDiv.id = `step-${key}`;
-                stepDiv.innerHTML = `
-                    <span class="status-icon">${steps[key].icon}</span>
-                    <span>${steps[key].label}</span>
-                `;
-                statusSteps.appendChild(stepDiv);
-            });
 
             try {
                 // Start the video generation
@@ -304,24 +277,16 @@
         });
 
         function updateStepStatus(status) {
-            // Mark all previous steps as completed
-            let foundCurrent = false;
-            Object.keys(steps).forEach(key => {
-                const stepDiv = document.getElementById(`step-${key}`);
-                if (key === status) {
-                    stepDiv.className = 'status-step in-progress';
-                    foundCurrent = true;
-                } else if (!foundCurrent) {
-                    stepDiv.className = 'status-step completed';
-                } else {
-                    stepDiv.className = 'status-step pending';
-                }
-            });
+            const statusText = document.getElementById('statusText');
+            if (statusMessages[status]) {
+                statusText.textContent = statusMessages[status];
+            }
         }
 
         function showVideo(videoUrl) {
             generatedVideo.src = videoUrl;
             videoContainer.classList.add('active');
+            statusContainer.classList.remove('active');
         }
 
         function showError(message) {
