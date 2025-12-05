@@ -1,69 +1,76 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>News Agent Title</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
 
-<body>
+  <body>
     <div class="backgroundImage">
-    <nav>
+      <nav>
         <div class="nav-left">
-            <img class="logo" src="{{HermesLogo}}" alt="Page Logo">
-            <img class="namelogo" src="{{HermesName}}" alt="Page Name">
+          <img class="logo" src="{{HermesLogo}}" alt="Page Logo" />
+          <img class="namelogo" src="{{HermesName}}" alt="Page Name" />
         </div>
         <ul class="nav-right">
-            <li><a href="/">Today</a></li>
-            <li><a href="/previousnews">News</a></li>
-            <li><a href="/team">About Us</a></li>
-            <li><a href="/agent">Agent</a></li>
-            <li><button onclick="toggle()">Theme</button></li>
+          <li><a href="/">Today</a></li>
+          <li><a href="/previousnews">News</a></li>
+          <li><a href="/team">About Us</a></li>
+          <li><a href="/agent">Agent</a></li>
+          <li><button onclick="toggle()">Theme</button></li>
         </ul>
-    </nav>
+      </nav>
 
-    <main class="indexmain">
+      <main class="indexmain">
         <ul>
-             <li class="mainvid">
-                <a class="videoPlayer">
-                    <video autoplay muted controls > 
-                        <source src='{{video}}' type="video/mp4"> 
-                        Your browser does not support the video tag.
-                    </video>
-                </a>
-            </li>
-            <div class = "LowerHalf">
+          <li class="mainvid">
+            <a class="videoPlayer">
+              <video autoplay muted controls>
+                <source src="{{video}}" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </a>
+          </li>
+          <div class="LowerHalf">
             <div class="TagsandText">
-                <div class="titleSection">
-                    <h2>{{ title }}</h2>
-                    <div class="tagList" id="tagList">
-                        {% for tag in tags %}
-                        <span class="tag">{{ tag }}</span>
-                        {% endfor %}
-                    </div>
+              <div class="titleSection">
+                <h2>{{ title }}</h2>
+                <div class="tagList" id="tagList">
+                  {% for tag in tags %}
+                  <span class="tag">{{ tag }}</span>
+                  {% endfor %}
                 </div>
-                <div class="transcriptSection">
-                    <p>{{ transcript }}</p>
-                </div>
+              </div>
+              <div class="transcriptSection">
+                <p>{{ transcript }}</p>
+              </div>
             </div>
             <div class="sourcesIndex">
-                <h2>Sources</h2>
-                {% if sources %}
-                <ul class="sourcesList">
-                    {% for source in sources %}
-                    <li><a href="{{ source.url }}" target="_blank">{{ source.name }}</a></li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p>No sources available</p>
-                {% endif %}
-            </div>  
-            </div>  
+              <h2>Sources</h2>
+              {% if sources %}
+              <ul class="sourcesList">
+                {% for source in sources %}
+                <li>
+                  <a href="{{ source.url }}" target="_blank"
+                    >{{ source.name }}</a
+                  >
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>No sources available</p>
+              {% endif %}
+            </div>
+          </div>
         </ul>
-    </main>
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+      </main>
+      <script src="{{ url_for('static', filename='index.js') }}"></script>
     </div>
-</body>
+  </body>
 </html>

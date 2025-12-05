@@ -1,55 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Video Section Page</title>
+
+    <!-- Main styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
+
 <body>
 
     <div class="backgroundImage">
-    <nav>
-        <div class="nav-left">
-            <img class="logo" src="{{HermesLogo}}" alt="Page Logo">
-            <img class="namelogo" src="{{HermesName}}" alt="Page Name">
-        </div>
-        <ul class="nav-right">
-            <li><a href="/">Today</a></li>
-            <li><a href="/previousnews">News</a></li>
-            <li><a href="/team">About Us</a></li>
-            <li><a href="/agent">Agent</a></li>
-            <li><button onclick="toggle()">Theme</button></li>
-        </ul>
-    </nav>
+        <nav>
+            <div class="nav-left">
+                <img class="logo" src="{{ HermesLogo }}" alt="Page Logo">
+                <img class="namelogo" src="{{ HermesName }}" alt="Page Name">
+            </div>
 
+            <ul class="nav-right">
+                <li><a href="/">Today</a></li>
+                <li><a href="/previousnews">News</a></li>
+                <li><a href="/team">About Us</a></li>
+                <li><a href="/agent">Agent</a></li>
+                <li><button onclick="toggle()">Theme</button></li>
+            </ul>
+        </nav>
 
-    <header>
-        <h1>Our Featured Video</h1>
-    </header>
+        <header>
+            <h1>Our Featured Video</h1>
+        </header>
 
+        <main class="video-section">
 
-    <main class="video-section">
-
-        <div class="video-container">
+            <!-- VIDEO PLAYER -->
             <div class="video-container">
-                <iframe class="video"
-                    src='{{video}}' type="video/mp4"
-                    title="Youtube video player"
+                <iframe
+                    class="video"
+                    src="{{ video }}"
+                    title="Video player"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
             </div>
-            
-         <div clas="video-description">
-             <h2>About This Video</h2>
-            <p>
-                Giggity
-            </p>
-        </div>
-    </main>
+
+            <!-- DESCRIPTION + TAGS + SOURCES -->
+            <div class="video-description">
+
+                <div class="LowerHalf">
+                    
+                    <!-- LEFT SIDE: TITLE, TAGS, TRANSCRIPT -->
+                    <div class="TagsandText">
+
+                        <div class="titleSection">
+                            <h2>{{ title }}</h2>
+
+                            <div class="tagList" id="tagList">
+                                {% for tag in tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="transcriptSection">
+                            <p>{{ transcript }}</p>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SIDE: SOURCES -->
+                    <div class="sourcesIndex">
+                        <h2>Sources</h2>
+
+                        {% if sources %}
+                            <ul class="sourcesList">
+                                {% for source in sources %}
+                                    <li>
+                                        <a href="{{ source.url }}" target="_blank">
+                                            {{ source.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No sources available</p>
+                        {% endif %}
+                    </div>
+
+                </div> <!-- LowerHalf end -->
+
+            </div> <!-- video-description end -->
+
+        </main>
+
+    </div> <!-- backgroundImage end -->
 
 </body>
 </html>
+

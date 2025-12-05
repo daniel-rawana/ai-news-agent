@@ -25,6 +25,49 @@ app = Flask(__name__)
 # Store active tasks and their status queues
 active_tasks = {}
 
+def build_video_context(video_data):
+    """Given a single video row dict, extract the fields needed by the template."""
+    if not video_data:
+        return {
+            "video": None,
+            "title": "No video available",
+            "transcript": "",
+            "sources": [],
+            "tags": [],
+        }
+
+    video_url = video_data.get('video_url')
+    title = video_data.get('summarized_title', 'News Title')
+    transcript = video_data.get('summary', 'No description available.')
+
+    # Extract sources
+    sources = []
+    if video_data.get('video_sources'):
+        for vs in video_data['video_sources']:
+            src = vs.get('sources')
+            if src:
+                sources.append({
+                    "name": src.get("name", "Unknown Source"),
+                    "url": src.get("base_url", "#")
+                })
+
+    # Extract tags
+    tags = []
+    if video_data.get('video_tags'):
+        for vt in video_data['video_tags']:
+            tg = vt.get('tags')
+            if tg and tg.get("name"):
+                tags.append(tg["name"])
+
+    return {
+        "video": video_url,
+        "title": title,
+        "transcript": transcript,
+        "sources": sources,
+        "tags": tags,
+    }
+
+
 @app.context_processor
 def inject_hermes_assets():
     return {
@@ -102,26 +145,41 @@ def sources():
 
 @app.route("/team")
 def team():
-    linknews1 = url_for('static', filename='test-files/one.jpeg')
-    linknews2 = url_for('static', filename='test-files/two.jpg')
-    linknews3 = url_for('static', filename='test-files/three.webp')
-    linknews4 = url_for('static', filename='test-files/four.jpg')
-    linknews5 = url_for('static', filename='test-files/five.webp')
-    linknews6 = url_for('static', filename='test-files/six.jpg')
-    linknews7 = url_for('static', filename='test-files/seven.webp')
-    linknews8 = url_for('static', filename='test-files/eight.webp')
-    linknews9 = url_for('static', filename='test-files/nine.webp')
+    daniel = url_for('static', filename='team_photos/DanielRawana.jpg')
+    rickny = url_for('static', filename='team_photos/RicknySanon.jpg')
+    eduardo = url_for('static', filename='team_photos/EduardoGoncalvez.jpg')
+    gabriel = url_for('static', filename='team_photos/GabrielRicadoAlamo.png')
+    remberto = url_for('static', filename='team_photos/RembertoSilva.jpg')
+    mohamed = url_for('static', filename='team_photos/MohammedAlSaleh.jpg')
+    alex = url_for('static', filename='team_photos/AlexWaisman.jpg')
+    justin = url_for('static', filename='team_photos/JustinPalma.jpg')
+    jonathan = url_for('static', filename='team_photos/jona.png')
+    aryan = url_for('static', filename='team_photos/AryanRahman.png')
+    roberto = url_for('static', filename='team_photos/RobertoMachin.png')
+    alfonsina = url_for('static', filename='team_photos/AlfonsinaCardenas.png')
 
-    return render_template('team.html',news1 = linknews1,news2 = linknews2,news3 = linknews3,news4 = linknews4,news5 = linknews5,news6 = linknews6,news7 = linknews7,news8 = linknews8,news9 = linknews9)
-
+    return render_template('team.html',
+        daniel=daniel, rickny=rickny, eduardo=eduardo, gabriel=gabriel,
+        remberto=remberto, mohamed=mohamed, alex=alex, justin=justin,
+        jonathan=jonathan, aryan=aryan, roberto=roberto, alfonsina=alfonsina
+    )
 @app.route("/video/<int:id>")
 def video(id):
+    response = supabase.table('videos').select(
+        '*, original_titles(*), video_sources(sources(*)), video_tags(tags(*))'
+    ).eq('id', id).limit(1).execute()
 
-    response = supabase.table('videos').select('video_url').eq('id', id).execute()
-    video_data = response.data
-    video_url = video_data[0]['video_url'] if video_data else None
-    return render_template('video.html', video=video_url)
+    video_data = response.data[0] if response.data else None
+    ctx = build_video_context(video_data)
 
+    return render_template(
+        'index.html',
+        video=ctx["video"],
+        title=ctx["title"],
+        transcript=ctx["transcript"],
+        sources=ctx["sources"],
+        tags=ctx["tags"],
+    )
 @app.route("/agent")
 def agent():
     return render_template('agent.html')
@@ -262,6 +320,7 @@ def run_video_generation(task_id, category, status_queue):
         if task_id in active_tasks:
             active_tasks[task_id]['error'] = error_msg
             active_tasks[task_id]['current_status'] = 'error'
+
 
 if __name__ == "__main__":
     # debug=True helps during development (auto-reload and better error pages)

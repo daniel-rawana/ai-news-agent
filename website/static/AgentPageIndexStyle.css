@@ -49,6 +49,7 @@ body.light{
     --border-muted: oklch(0.3 0.09 255);
     --primary: oklch(0.76 0.1 255);
     --secondary: oklch(0.8724 0.1203 88.87);
+    --tertiary: oklch(0.515 0.1033 243.52);
     --danger: oklch(0.7 0.09 30);
     --warning: oklch(0.7 0.09 100);
     --success: oklch(0.7 0.09 160);
@@ -65,7 +66,7 @@ body.light{
     margin: 0;
     padding: 0;
     font-family: 'Dogica', monospace;
-    font-size: clamp(7px, 0.75vw, 10px);
+    /*-font-size: clamp(7px, 0.75vw, 10px);*/
 }
 
 /* Navbar styles */
@@ -329,6 +330,7 @@ body main ul div.TagsandText .titleSection h2 {
     font-size: 1.5em;
     margin-bottom: 1vh;
     word-wrap: break-word;
+    line-height: 1.4;
 }
 
 body main ul div.TagsandText .transcriptSection {
