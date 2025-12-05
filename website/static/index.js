@@ -14,19 +14,6 @@ function fetchVideoData() {
 }
 
 
-function loadingTagsOnVideo() {
-    //Implement code to draw tags from database into this array
-IndexTagsArray = ["Politics", "Economy", "Health", "Technology", "Sports"]; 
-
-for(i = 0; i < IndexTagsArray.length; i++) {
-
-document.getElementById("tagList").appendChild(
-    elementFromHtml(`<div class="tag">${IndexTagsArray[i]}</div>`)
-);
-
-}
-
-}
 
 loadingTagsOnVideo();
 
