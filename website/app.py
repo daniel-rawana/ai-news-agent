@@ -133,9 +133,8 @@ def previousnews():
     news_items = []
     
     for item in thumbnail_items:
-        if item['date'] not in seen_dates:
-            seen_dates.add(item['date'])
-            news_items.append(item)
+        seen_dates.add(item['date'])
+        news_items.append(item)
     
     return render_template('previousnews.html', news_items=news_items)
     
