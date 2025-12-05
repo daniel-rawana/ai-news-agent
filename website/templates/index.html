@@ -13,44 +13,17 @@
 
   <body>
     <div class="backgroundImage">
-<<<<<<< HEAD
-      <h1>
-        <img
-          class="logo"
-          src="{{HermesLogo}}"
-          alt="Page Logo"
-          width="200"
-          height="150"
-        />
-        <img
-          class="namelogo"
-          src="{{HermesName}}"
-          alt="Page Name"
-          width="400"
-          height="100"
-        />
-        <button onclick="toggle()">Theme</button>
-      </h1>
-
       <nav>
-        <ul>
-          <li><a href="/">Today</a></li>
-          <li><a href="/previousnews">News</a></li>
-          <!--li><a href="/sources">Sources</a></li>-->
-          <li><a href="/team">About Us</a></li>
-=======
-    <nav>
         <div class="nav-left">
-            <img class="logo" src="{{HermesLogo}}" alt="Page Logo">
-            <img class="namelogo" src="{{HermesName}}" alt="Page Name">
+          <img class="logo" src="{{HermesLogo}}" alt="Page Logo" />
+          <img class="namelogo" src="{{HermesName}}" alt="Page Name" />
         </div>
         <ul class="nav-right">
-            <li><a href="/">Today</a></li>
-            <li><a href="/previousnews">News</a></li>
-            <li><a href="/team">About Us</a></li>
-            <li><a href="/agent">Agent</a></li>
-            <li><button onclick="toggle()">Theme</button></li>
->>>>>>> main
+          <li><a href="/">Today</a></li>
+          <li><a href="/previousnews">News</a></li>
+          <li><a href="/team">About Us</a></li>
+          <li><a href="/agent">Agent</a></li>
+          <li><button onclick="toggle()">Theme</button></li>
         </ul>
       </nav>
 
@@ -59,56 +32,42 @@
           <li class="mainvid">
             <a class="videoPlayer">
               <video autoplay muted controls>
-                <source src="{{video.video_url}}" type="video/mp4" />
+                <source src="{{video}}" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </a>
           </li>
           <div class="LowerHalf">
             <div class="TagsandText">
-<<<<<<< HEAD
-              <a>
-                <div>
-                  <h2>{{ video.summarized_title }}</h2>
-                  <div class="tagList" id="tagList"></div>
+              <div class="titleSection">
+                <h2>{{ title }}</h2>
+                <div class="tagList" id="tagList">
+                  {% for tag in tags %}
+                  <span class="tag">{{ tag }}</span>
+                  {% endfor %}
                 </div>
-                <p>{{ video.summary }}</p>
-              </a>
+              </div>
+              <div class="transcriptSection">
+                <p>{{ transcript }}</p>
+              </div>
             </div>
             <div class="sourcesIndex">
-              <a>
-                <h2>Sources</h2>
-                <p>Listed here:</p>
-              </a>
+              <h2>Sources</h2>
+              {% if sources %}
+              <ul class="sourcesList">
+                {% for source in sources %}
+                <li>
+                  <a href="{{ source.url }}" target="_blank"
+                    >{{ source.name }}</a
+                  >
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>No sources available</p>
+              {% endif %}
             </div>
           </div>
-=======
-                <div class="titleSection">
-                    <h2>{{ title }}</h2>
-                    <div class="tagList" id="tagList">
-                        {% for tag in tags %}
-                        <span class="tag">{{ tag }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="transcriptSection">
-                    <p>{{ transcript }}</p>
-                </div>
-            </div>
-            <div class="sourcesIndex">
-                <h2>Sources</h2>
-                {% if sources %}
-                <ul class="sourcesList">
-                    {% for source in sources %}
-                    <li><a href="{{ source.url }}" target="_blank">{{ source.name }}</a></li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p>No sources available</p>
-                {% endif %}
-            </div>  
-            </div>  
->>>>>>> main
         </ul>
       </main>
       <script src="{{ url_for('static', filename='index.js') }}"></script>
