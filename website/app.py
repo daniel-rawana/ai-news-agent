@@ -102,28 +102,70 @@ def sources():
 
 @app.route("/team")
 def team():
-    teamimg1 = url_for('static', filename='team_photos/DanielRawana.jpg')
-    teamimg2 = url_for('static', filename='team_photos/RicknySanon.jpg')
-    teamimg3 = url_for('static', filename='team_photos/EduardoGoncalvez.jpg')
-    teamimg4 = url_for('static', filename='team_photos/GabrielRicadoAlamo.png')
-    teamimg5 = url_for('static', filename='team_photos/RembertoSilva.jpg')
-    teamimg6 = url_for('static', filename='team_photos/MohammedAlSaleh.jpg')
-    teamimg7 = url_for('static', filename='team_photos/AlexWaisman.jpg')
-    teamimg8 = url_for('static', filename='team_photos/JustinPalma.jpg')
-    teamimg9 = url_for('static', filename='team_photos/jona.png')
-    teamimg10 = url_for('static', filename='team_photos/AryanRahman.png')
-    teamimg11 = url_for('static', filename='team_photos/RobertoMachin.png')
-    teamimg13 = url_for('static', filename='team_photos/AlfonsinaCardenas.png')
+    daniel = url_for('static', filename='team_photos/DanielRawana.jpg')
+    rickny = url_for('static', filename='team_photos/RicknySanon.jpg')
+    eduardo = url_for('static', filename='team_photos/EduardoGoncalvez.jpg')
+    gabriel = url_for('static', filename='team_photos/GabrielRicadoAlamo.png')
+    remberto = url_for('static', filename='team_photos/RembertoSilva.jpg')
+    mohamed = url_for('static', filename='team_photos/MohammedAlSaleh.jpg')
+    alex = url_for('static', filename='team_photos/AlexWaisman.jpg')
+    justin = url_for('static', filename='team_photos/JustinPalma.jpg')
+    jonathan = url_for('static', filename='team_photos/jona.png')
+    aryan = url_for('static', filename='team_photos/AryanRahman.png')
+    roberto = url_for('static', filename='team_photos/RobertoMachin.png')
+    alfonsina = url_for('static', filename='team_photos/AlfonsinaCardenas.png')
 
-    return render_template('team.html',pick1 = teamimg1,pick2 = teamimg2,pick3 = teamimg3,pick4 = teamimg4,pick5 = teamimg5,pick6 = teamimg6,pick7 = teamimg7,pick8 = teamimg8,pick9 = teamimg9,pick10 = teamimg10,pick11 = teamimg11,pick13 = teamimg13)
-
+    return render_template('team.html',
+        daniel=daniel, rickny=rickny, eduardo=eduardo, gabriel=gabriel,
+        remberto=remberto, mohamed=mohamed, alex=alex, justin=justin,
+        jonathan=jonathan, aryan=aryan, roberto=roberto, alfonsina=alfonsina
+    )
 @app.route("/video/<int:id>")
 def video(id):
+    # Fetch video with related data
+    response = supabase.table('videos').select(
+        '*, original_titles(*), video_sources(sources(*)), video_tags(tags(*))'
+    ).eq('id', id).execute()
+    
+    video_data = response.data[0] if response.data else None
+    
+    if video_data:
+        video_url = video_data.get('video_url')
+        title = video_data.get('summarized_title', 'News Title')
+        transcript = video_data.get('summary', 'No description available.')
+        
+        # Extract sources with name and URL
+        sources = []
+        if video_data.get('video_sources'):
+            for vs in video_data['video_sources']:
+                source = vs.get('sources')
+                if source:
+                    sources.append({
+                        'name': source.get('name', 'Unknown Source'),
+                        'url': source.get('base_url', '#')
+                    })
+        
+        # Extract tags
+        tags = []
+        if video_data.get('video_tags'):
+            for vt in video_data['video_tags']:
+                tag = vt.get('tags')
+                if tag and tag.get('name'):
+                    tags.append(tag['name'])
+    else:
+        video_url = None
+        title = 'No video available'
+        transcript = ''
+        sources = []
+        tags = []
 
-    response = supabase.table('videos').select('video_url').eq('id', id).execute()
-    video_data = response.data
-    video_url = video_data[0]['video_url'] if video_data else None
-    return render_template('video.html', video=video_url)
+    return render_template('video.html', 
+        video=video_url, 
+        title=title, 
+        transcript=transcript,
+        sources=sources,
+        tags=tags
+    )
 
 @app.route("/agent")
 def agent():
