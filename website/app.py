@@ -35,7 +35,7 @@ def inject_hermes_assets():
 
 @app.route("/")
 def index():
-    mainvideo = supabase.table('videos').select('*').execute()
+    mainvideo = supabase.table('videos').select('*').order('date', desc=True).execute()
     videos = mainvideo.data
 
     video_url = videos[0]['video_url'] if videos else None
