@@ -25,6 +25,49 @@ app = Flask(__name__)
 # Store active tasks and their status queues
 active_tasks = {}
 
+def build_video_context(video_data):
+    """Given a single video row dict, extract the fields needed by the template."""
+    if not video_data:
+        return {
+            "video": None,
+            "title": "No video available",
+            "transcript": "",
+            "sources": [],
+            "tags": [],
+        }
+
+    video_url = video_data.get('video_url')
+    title = video_data.get('summarized_title', 'News Title')
+    transcript = video_data.get('summary', 'No description available.')
+
+    # Extract sources
+    sources = []
+    if video_data.get('video_sources'):
+        for vs in video_data['video_sources']:
+            src = vs.get('sources')
+            if src:
+                sources.append({
+                    "name": src.get("name", "Unknown Source"),
+                    "url": src.get("base_url", "#")
+                })
+
+    # Extract tags
+    tags = []
+    if video_data.get('video_tags'):
+        for vt in video_data['video_tags']:
+            tg = vt.get('tags')
+            if tg and tg.get("name"):
+                tags.append(tg["name"])
+
+    return {
+        "video": video_url,
+        "title": title,
+        "transcript": transcript,
+        "sources": sources,
+        "tags": tags,
+    }
+
+
 @app.context_processor
 def inject_hermes_assets():
     return {
@@ -122,51 +165,21 @@ def team():
     )
 @app.route("/video/<int:id>")
 def video(id):
-    # Fetch video with related data
     response = supabase.table('videos').select(
         '*, original_titles(*), video_sources(sources(*)), video_tags(tags(*))'
-    ).eq('id', id).execute()
-    
+    ).eq('id', id).limit(1).execute()
+
     video_data = response.data[0] if response.data else None
-    
-    if video_data:
-        video_url = video_data.get('video_url')
-        title = video_data.get('summarized_title', 'News Title')
-        transcript = video_data.get('summary', 'No description available.')
-        
-        # Extract sources with name and URL
-        sources = []
-        if video_data.get('video_sources'):
-            for vs in video_data['video_sources']:
-                source = vs.get('sources')
-                if source:
-                    sources.append({
-                        'name': source.get('name', 'Unknown Source'),
-                        'url': source.get('base_url', '#')
-                    })
-        
-        # Extract tags
-        tags = []
-        if video_data.get('video_tags'):
-            for vt in video_data['video_tags']:
-                tag = vt.get('tags')
-                if tag and tag.get('name'):
-                    tags.append(tag['name'])
-    else:
-        video_url = None
-        title = 'No video available'
-        transcript = ''
-        sources = []
-        tags = []
+    ctx = build_video_context(video_data)
 
-    return render_template('video.html', 
-        video=video_url, 
-        title=title, 
-        transcript=transcript,
-        sources=sources,
-        tags=tags
+    return render_template(
+        'index.html',
+        video=ctx["video"],
+        title=ctx["title"],
+        transcript=ctx["transcript"],
+        sources=ctx["sources"],
+        tags=ctx["tags"],
     )
-
 @app.route("/agent")
 def agent():
     return render_template('agent.html')
@@ -307,6 +320,7 @@ def run_video_generation(task_id, category, status_queue):
         if task_id in active_tasks:
             active_tasks[task_id]['error'] = error_msg
             active_tasks[task_id]['current_status'] = 'error'
+
 
 if __name__ == "__main__":
     # debug=True helps during development (auto-reload and better error pages)

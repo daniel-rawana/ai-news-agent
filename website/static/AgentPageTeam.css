@@ -84,14 +84,14 @@ body main ul li  {
     grid-template-columns: repeat(12,1fr);
 
     grid-template-areas: 
-  ". . . two two . . five five . six six"
-  ". one one two two . . five five . six six"
-  ". one one . three three  three three twelve twelve . ."
-  ". . eleven eleven three three three three twelve twelve nine nine"
-  "fourth fourth eleven eleven three three three three . . nine nine"
-  "fourth fourth . ten ten . . . eight eight . ."
-  ". seven seven ten ten . four four eight eight third third"
-  ". seven seven . . . four four . . third third";
+  " . . two two . . five five . six six"
+  " one one two two . . five five . six six"
+  " one one . three three  three three twelve twelve . ."
+  " . eleven eleven three three three three twelve twelve nine nine"
+  " fourth eleven eleven three three three three . . nine nine"
+  " fourth . ten ten . . . eight eight . ."
+  " seven seven ten ten . four four eight eight third third"
+  " seven seven . . . four four . . third third";
   
 
 }
