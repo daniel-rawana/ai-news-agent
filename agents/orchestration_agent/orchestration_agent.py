@@ -372,4 +372,4 @@ def run_news_video_pipeline(story_count: int = 3):
 
 
 if __name__ == "__main__":
-    result = run_news_video_pipeline(story_count=4)
+    result = run_news_video_pipeline(story_count=3)

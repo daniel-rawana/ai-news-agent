@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>News Agent Title</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='AgentPageIndexStyle.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .agent-container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 30px;
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .agent-form {
+                margin-bottom: 30px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+            .form-group select {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px;
+                border: 2px solid #ddd;
+                border-radius: 5px;
+                background-color: white;
+            }
+
+            .generate-btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 18px;
+                font-weight: bold;
+                color: white;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .generate-btn:hover:not(:disabled) {
+                background-color: #0056b3;
+            }
+
+            .generate-btn:disabled {
+                background-color: #6c757d;
+                cursor: not-allowed;
+            }
+
+            .status-container {
+                margin-top: 30px;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 5px;
+                border-left: 4px solid #007bff;
+                display: none;
+            }
+
+            .status-container.active {
+                display: block;
+            }
+
+            .status-title {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+
+            .status-step {
+                padding: 10px;
+                margin-bottom: 10px;
+                background: white;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+            }
+
+            .status-step.completed {
+                border-left: 4px solid #28a745;
+            }
+
+            .status-step.in-progress {
+                border-left: 4px solid #ffc107;
+            }
+
+            .status-step.pending {
+                border-left: 4px solid #ddd;
+            }
+
+            .status-step.error {
+                border-left: 4px solid #dc3545;
+            }
+
+            .status-icon {
+                margin-right: 10px;
+                font-size: 20px;
+            }
+
+            .video-container {
+                margin-top: 30px;
+                display: none;
+            }
+
+            .video-container.active {
+                display: block;
+            }
+
+            .video-container video {
+                width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .error-message {
+                margin-top: 20px;
+                padding: 15px;
+                background: #f8d7da;
+                border: 1px solid #f5c6cb;
+                border-radius: 5px;
+                color: #721c24;
+                display: none;
+            }
+
+            .error-message.active {
+                display: block;
+            }
+        </style>
+</head>
+
+<body>
+    <div class="backgroundImage">
+    <h1>
+            <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
+            <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
+            <button onclick="toggle()">Theme</button>
+    </h1>
+
+    <nav>
+        <ul>
+            <li><a href="/">Today</a></li>
+            <li><a href="/previousnews">News</a></li>
+            <!--li><a href="/sources">Sources</a></li>-->
+            <li><a href="/team">About Us</a></li>
+            <li><a href="/agent">Agent</a></li>
+        </ul>
+    </nav>
+
+    <div class="agent-container">
+        <h2>Generate News Video</h2>
+        <p>Select a news category and generate a custom AI news video.</p>
+
+        <form class="agent-form" id="agentForm">
+            <div class="form-group">
+                <label for="category">News Category:</label>
+                <select id="category" name="category" required>
+                    <option value="general">General</option>
+                    <option value="business">Business</option>
+                    <option value="technology">Technology</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="health">Health</option>
+                    <option value="science">Science</option>
+                    <option value="sports">Sports</option>
+                </select>
+            </div>
+
+            <button type="submit" class="generate-btn" id="generateBtn">
+                Generate Video
+            </button>
+        </form>
+
+        <div class="status-container" id="statusContainer">
+            <div class="status-title">Video Generation Progress</div>
+            <div id="statusSteps"></div>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="video-container" id="videoContainer">
+            <h3>Generated Video</h3>
+            <video id="generatedVideo" controls></video>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('agentForm');
+        const generateBtn = document.getElementById('generateBtn');
+        const statusContainer = document.getElementById('statusContainer');
+        const statusSteps = document.getElementById('statusSteps');
+        const videoContainer = document.getElementById('videoContainer');
+        const generatedVideo = document.getElementById('generatedVideo');
+        const errorMessage = document.getElementById('errorMessage');
+
+        const steps = {
+            'starting': { label: 'Initializing pipeline', icon: '🚀' },
+            'news_fetched': { label: 'Fetching news articles', icon: '📰' },
+            'script_generated': { label: 'Generating news script', icon: '✍️' },
+            'voiceover_created': { label: 'Creating voiceover', icon: '🎙️' },
+            'boundaries_detected': { label: 'Detecting story boundaries', icon: '🎯' },
+            'thumbnails_generated': { label: 'Generating thumbnails', icon: '🖼️' },
+            'video_created': { label: 'Creating video', icon: '🎬' },
+            'completed': { label: 'Finalizing and uploading', icon: '✅' }
+        };
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const category = document.getElementById('category').value;
+
+            // Reset UI
+            statusContainer.classList.add('active');
+            videoContainer.classList.remove('active');
+            errorMessage.classList.remove('active');
+            statusSteps.innerHTML = '';
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating...';
+
+            // Initialize status steps
+            Object.keys(steps).forEach(key => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'status-step pending';
+                stepDiv.id = `step-${key}`;
+                stepDiv.innerHTML = `
+                    <span class="status-icon">${steps[key].icon}</span>
+                    <span>${steps[key].label}</span>
+                `;
+                statusSteps.appendChild(stepDiv);
+            });
+
+            try {
+                // Start the video generation
+                const response = await fetch('/agent/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ category })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to start video generation');
+                }
+
+                const data = await response.json();
+                const taskId = data.task_id;
+
+                // Poll for status updates
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const statusResponse = await fetch(`/agent/status/${taskId}`);
+
+                        if (!statusResponse.ok) {
+                            clearInterval(pollInterval);
+                            showError('Failed to get status update');
+                            resetButton();
+                            return;
+                        }
+
+                        const statusData = await statusResponse.json();
+                        console.log('Status update:', statusData);
+
+                        if (statusData.status === 'error') {
+                            clearInterval(pollInterval);
+                            showError(statusData.message || 'An error occurred');
+                            resetButton();
+                            return;
+                        }
+
+                        // Update step status
+                        updateStepStatus(statusData.status);
+
+                        if (statusData.status === 'completed') {
+                            clearInterval(pollInterval);
+                            showVideo(statusData.video_url);
+                            resetButton();
+                        }
+                    } catch (error) {
+                        console.error('Polling error:', error);
+                        clearInterval(pollInterval);
+                        showError('Connection to server lost. Please try again.');
+                        resetButton();
+                    }
+                }, 2000); // Poll every 2 seconds
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message);
+                resetButton();
+            }
+        });
+
+        function updateStepStatus(status) {
+            // Mark all previous steps as completed
+            let foundCurrent = false;
+            Object.keys(steps).forEach(key => {
+                const stepDiv = document.getElementById(`step-${key}`);
+                if (key === status) {
+                    stepDiv.className = 'status-step in-progress';
+                    foundCurrent = true;
+                } else if (!foundCurrent) {
+                    stepDiv.className = 'status-step completed';
+                } else {
+                    stepDiv.className = 'status-step pending';
+                }
+            });
+        }
+
+        function showVideo(videoUrl) {
+            generatedVideo.src = videoUrl;
+            videoContainer.classList.add('active');
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('active');
+        }
+
+        function resetButton() {
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate Video';
+        }
+    </script>
+    </div>
+</body>
+</html>
