@@ -9,18 +9,19 @@
 </head>
 
 <body>
-    <h1>
-            <img class = "logo" src="{{HermesLogo}}" alt="Page Logo" width="200" height="150">
-            <img class = "namelogo" src="{{HermesName}}" alt="Page Name" width="400" height="100">
-            <button onclick="toggle()">Theme</button>
-    </h1>
 
+    <div class="backgroundImage">
     <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/previousnews">Previous News</a></li>
-            <!--li><a href="/sources">Sources</a></li>-->
-            <li><a href="/team">Team</a></li>
+        <div class="nav-left">
+            <img class="logo" src="{{HermesLogo}}" alt="Page Logo">
+            <img class="namelogo" src="{{HermesName}}" alt="Page Name">
+        </div>
+        <ul class="nav-right">
+            <li><a href="/">Today</a></li>
+            <li><a href="/previousnews">News</a></li>
+            <li><a href="/team">About Us</a></li>
+            <li><a href="/agent">Agent</a></li>
+            <li><button onclick="toggle()">Theme</button></li>
         </ul>
     </nav>
 
